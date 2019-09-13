@@ -67,17 +67,17 @@ public abstract class Piece {
    *
    * @return first move
    */
-  public boolean isFirst() {
+  private boolean isFirst() {
     return firstMove;
   }
 
   /**
    * Sets the color of the piece
    *
-   * @param whiteBlack true = white false = black
+   * @param color true = white false = black
    */
-  public void setColor(boolean whiteBlack) {
-    WB = whiteBlack;
+  private void setColor(boolean color) {
+    WB = color;
   }
 
   /**
@@ -92,7 +92,7 @@ public abstract class Piece {
    *
    * @param str the short hand of the piece
    */
-  void setShorthand(char str) {
+  private void setShorthand(char str) {
     //TODO add some input checks here
     shorthand = str;
   }
@@ -102,7 +102,7 @@ public abstract class Piece {
    *
    * @param identifier number identifier of the piece
    */
-  void setNonce(int identifier) {
+  private void setNonce(int identifier) {
     nonce = identifier;
   }
 
@@ -115,7 +115,7 @@ public abstract class Piece {
     return WB;
   }
 
-  char colorRep() {
+  private char colorRep() {
     return getColor() ? '+' : '-';
   }
 
