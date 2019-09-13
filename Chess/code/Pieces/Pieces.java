@@ -17,7 +17,7 @@ public enum Pieces {
   }
 
   public static Piece getByNumRep(int x) {
-    switch(x) {
+    switch (x) {
       case 1:
         return new Pawn();
       case 2:

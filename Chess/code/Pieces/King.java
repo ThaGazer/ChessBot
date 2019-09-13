@@ -7,33 +7,33 @@ import java.util.Set;
 
 public class King extends Piece {
 
+  private static final char representation = 'K';
 
-    public King() {
-        setShorthand("K");
-    }
+  public King() {
+    this(true, 0);
+  }
 
-    public King(boolean whiteBlack) {
-        this();
-        setColor(whiteBlack);
-    }
+  public King(boolean color, int identifier) {
+    this(color, representation, identifier);
+  }
 
-    public King(King k) {
-        super(k);
-    }
+  private King(boolean color, char shortHand, int identifier) {
+    super(color, shortHand, identifier);
+  }
 
-    @Override
-    public Set<Tile> moveSet(Tile t) {
-        Set<Tile> moves = new HashSet<>();
+  @Override
+  public Set<Tile> moveSet(Tile t) {
+    Set<Tile> moves = new HashSet<>();
 
-        moves.add(new Tile((t.getRow()+1), t.getCol()));
-        moves.add(new Tile((t.getRow()+1), (t.getCol()+1)));
-        moves.add(new Tile(t.getRow(), (t.getCol()+1)));
-        moves.add(new Tile((t.getRow()-1), (t.getCol()+1)));
-        moves.add(new Tile((t.getRow()-1), t.getCol()));
-        moves.add(new Tile((t.getRow()-1), (t.getCol()-1)));
-        moves.add(new Tile(t.getRow(), (t.getCol()-1)));
-        moves.add(new Tile((t.getRow()+1), (t.getCol()-1)));
+    moves.add(new Tile((t.getRow() + 1), t.getCol()));
+    moves.add(new Tile((t.getRow() + 1), (t.getCol() + 1)));
+    moves.add(new Tile(t.getRow(), (t.getCol() + 1)));
+    moves.add(new Tile((t.getRow() - 1), (t.getCol() + 1)));
+    moves.add(new Tile((t.getRow() - 1), t.getCol()));
+    moves.add(new Tile((t.getRow() - 1), (t.getCol() - 1)));
+    moves.add(new Tile(t.getRow(), (t.getCol() - 1)));
+    moves.add(new Tile((t.getRow() + 1), (t.getCol() - 1)));
 
-        return moves;
-    }
+    return moves;
+  }
 }

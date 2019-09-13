@@ -7,37 +7,22 @@ import java.util.Set;
 
 public class Bishop extends Piece {
 
-    private static int bishopNonce = 0;
+  private static final char representation = 'B';
 
-    public Bishop() {
-        nonce = ++bishopNonce;
-        setShorthand("B");
-    }
+  public Bishop() {
+    this(true, 0);
+  }
 
-    public Bishop(boolean whiteBlack) {
-        this();
-        setColor(whiteBlack);
-    }
+  public Bishop(boolean color, int identifier) {
+    this(color, representation, identifier);
+  }
 
-    public Bishop(Bishop b) {
-        super(b);
-    }
+  private Bishop(boolean color, char shortHand, int identifier) {
+    super(color, shortHand, identifier);
+  }
 
-    @Override
-    public Set<Tile> moveSet(Tile t) {
-        Set<Tile> moves = new HashSet<>();
-        for(int i = 1; i <= MAXNUMMOVES-t.getRow() && i <= MAXNUMMOVES-t.getCol(); i++) {
-            moves.add(new Tile((t.getRow()+i), (t.getCol()+i)));
-        }
-        for(int i = 0; i <= MAXNUMMOVES-t.getRow() && i <= t.getCol(); i++) {
-            moves.add(new Tile((t.getRow()+i), (t.getCol()-i)));
-        }
-        for(int i = 0; i <= t.getRow() && i <= MAXNUMMOVES-t.getCol(); i++) {
-            moves.add(new Tile((t.getRow()-i), (t.getCol()+i)));
-        }
-        for(int i = 0; i <= t.getRow() && i <= t.getCol(); i++) {
-            moves.add(new Tile((t.getRow()-i), (t.getCol()-i)));
-        }
-        return moves;
-    }
+  @Override
+  public Set<Tile> moveSet(Tile t) {
+    return diagonalMoves(t);
+  }
 }

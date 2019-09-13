@@ -7,37 +7,22 @@ import java.util.Set;
 
 public class Rook extends Piece {
 
-    private static int rookNonce = 0;
+  private static final char representation = 'R';
 
-    public Rook() {
-        nonce = ++rookNonce;
-        setShorthand("R");
-    }
+  public Rook() {
+    this(true, 0);
+  }
 
-    public Rook(boolean whiteBlack) {
-        this();
-        setColor(whiteBlack);
-    }
+  public Rook(boolean color, int identifier) {
+    this(color, representation, identifier);
+  }
 
-    public Rook(Rook r) {
-        super(r);
-    }
+  private Rook(boolean color, char shortHand, int identifier) {
+    super(color, shortHand, identifier);
+  }
 
-    @Override
-    public Set<Tile> moveSet(Tile t) {
-        Set<Tile> moves = new HashSet<>();
-        for(int i = 1; i <= MAXNUMMOVES-t.getRow(); i++) {
-            moves.add(new Tile((t.getRow()+i), t.getCol()));
-        }
-        for(int i = 1; i <= t.getRow(); i++) {
-            moves.add(new Tile((t.getRow()+i), t.getCol()));
-        }
-        for(int i = 1; i <= MAXNUMMOVES-t.getCol(); i++) {
-            moves.add(new Tile(t.getRow(), (t.getCol()+i)));
-        }
-        for(int i = 1; i <= t.getCol(); i++) {
-            moves.add(new Tile(t.getRow(), (t.getCol()+i)));
-        }
-        return moves;
-    }
+  @Override
+  public Set<Tile> moveSet(Tile t) {
+    return straightMoves(t);
+  }
 }

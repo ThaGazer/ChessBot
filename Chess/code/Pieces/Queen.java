@@ -7,55 +7,27 @@ import java.util.Set;
 
 public class Queen extends Piece {
 
-    public Queen() {
-        setShorthand("Q");
-    }
+  private static final char representation = 'Q';
 
-    public Queen(boolean whiteBlack) {
-        this();
-        setColor(whiteBlack);
-    }
+  public Queen() {
+    this(true, 0);
+  }
 
-    public Queen(Queen q){
-        super(q);
-    }
+  public Queen(boolean color, int identifier) {
+    this(color, representation, identifier);
+  }
 
-    @Override
-    public Set<Tile> moveSet(Tile t) {
-        Set<Tile> moves = new HashSet<>();
+  private Queen(boolean color, char shortHand, int identifier) {
+    super(color, shortHand, identifier);
+  }
 
-        for(int i = 1; i <= MAXNUMMOVES-t.getRow(); i++) {
-            moves.add(new Tile((t.getRow()+i), t.getCol()));
-        }
+  @Override
+  public Set<Tile> moveSet(Tile t) {
+     Set<Tile> moves = new HashSet<>();
 
-        for(int i = 1; i <= t.getRow(); i++) {
-            moves.add(new Tile((t.getRow()+i), t.getCol()));
-        }
+     moves.addAll(straightMoves(t));
+     moves.addAll(diagonalMoves(t));
 
-        for(int i = 1; i <= MAXNUMMOVES-t.getCol(); i++) {
-            moves.add(new Tile(t.getRow(), (t.getCol()+i)));
-        }
-
-        for(int i = 1; i <= t.getCol(); i++) {
-            moves.add(new Tile(t.getRow(), (t.getCol()+i)));
-        }
-
-        for(int i = 1; i <= MAXNUMMOVES-t.getRow() && i <= MAXNUMMOVES-t.getCol(); i++) {
-            moves.add(new Tile((t.getRow()+i), (t.getCol()+i)));
-        }
-
-        for(int i = 0; i <= MAXNUMMOVES-t.getRow() && i <= t.getCol(); i++) {
-            moves.add(new Tile((t.getRow()+i), (t.getCol()-i)));
-        }
-
-        for(int i = 0; i <= t.getRow() && i <= MAXNUMMOVES-t.getCol(); i++) {
-            moves.add(new Tile((t.getRow()-i), (t.getCol()+i)));
-        }
-
-        for(int i = 0; i <= t.getRow() && i <= t.getCol(); i++) {
-            moves.add(new Tile((t.getRow()-i), (t.getCol()-i)));
-        }
-
-        return moves;
-    }
+     return moves;
+  }
 }

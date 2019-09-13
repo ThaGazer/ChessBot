@@ -7,63 +7,61 @@ import java.util.Set;
 
 public class Pawn extends Piece {
 
-  private static int pawnNonce = 0;
+  private static final char representation = 'P';
 
   public Pawn() {
-    nonce = ++pawnNonce;
-    setShorthand("p");
+    this(true, 0);
   }
 
-  public Pawn(boolean whiteBlack) {
-    this();
-    setColor(whiteBlack);
+  public Pawn(boolean color, int identifier) {
+    this(color, representation, identifier);
   }
 
-  public Pawn(Pawn p) {
-    super(p);
+  private Pawn(boolean color, char shortHand, int identifier) {
+    super(color, shortHand, identifier);
   }
 
   @Override
   public Set<Tile> moveSet(Tile t) {
     Set<Tile> moves = new HashSet<>();
 
-    if(WB) {
-      if(isFirst()) {
+    if (getColor()) {
+      if (isFirst()) {
         moves.add(new Tile(t.getRow() + 2, t.getCol()));
       }
 
       //upper bounds check
-      if(t.getRow() < 8) {
+      if (t.getRow() < 8) {
         //in front
         moves.add(new Tile(t.getRow() + 1, t.getCol()));
 
         //right diagonal
-        if(t.getCol() < 8) {
+        if (t.getCol() < 8) {
           moves.add(new Tile(t.getRow() + 1, t.getCol() + 1));
         }
 
         //left diagonal
-        if(t.getCol() > 1) {
+        if (t.getCol() > 1) {
           moves.add(new Tile(t.getRow() + 1, t.getCol() - 1));
         }
       }
     } else {
-      if(isFirst()) {
+      if (isFirst()) {
         moves.add(new Tile(t.getRow() - 2, t.getCol()));
       }
 
       //lower bound check
-      if(t.getRow() > 1) {
+      if (t.getRow() > 1) {
         //in front
         moves.add(new Tile(t.getRow() - 1, t.getCol()));
 
         //right diagonal
-        if(t.getCol() < 8) {
+        if (t.getCol() < 8) {
           moves.add(new Tile(t.getRow() - 1, t.getCol() + 1));
         }
 
         //left diagonal
-        if(t.getCol() > 1) {
+        if (t.getCol() > 1) {
           moves.add(new Tile(t.getRow() - 1, t.getCol() - 1));
         }
       }

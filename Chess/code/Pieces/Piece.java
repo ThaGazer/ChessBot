@@ -5,33 +5,36 @@ import Board.Tile;
 import java.util.HashSet;
 import java.util.Set;
 
-
-public class Piece {
+//TODO input checks
+public abstract class Piece {
 
   private static final String errPiece = "unexpected piece";
 
-  protected static final int MAXNUMMOVES = 8;
+  private static final int MAXNUMMOVES = 8;
 
-  protected int nonce;
-  protected boolean firstMove;
-  protected boolean WB;          /*true: white false: black*/
-  protected String shorthand;
+  private boolean WB;          /*true: white false: black*/
+  private int nonce;
+  private boolean firstMove = true;
+  private char shorthand;
 
   /**
    * Default constructor
    */
   public Piece() {
-    nonce = 0;
-    setColor(true);
-    setFirst(true);
-    setShorthand("-");
+    this(true, '-', 0);
   }
 
-  public Piece(Piece p) {
-    nonce = p.nonce;
-    setColor(p.getColor());
-    setShorthand(p.getShorthand());
-    setFirst(isFirst());
+  /**
+   * Parameter Constructor
+   *
+   * @param color      of the piece (true=white : false=black)
+   * @param shorthand  visual representation of the piece
+   * @param identifier identifies between duplicated pieces. (Rook 1 or Rook 2)
+   */
+  public Piece(boolean color, char shorthand, int identifier) {
+    setColor(color);
+    setShorthand(shorthand);
+    setNonce(identifier);
   }
 
   /**
@@ -41,7 +44,7 @@ public class Piece {
    * @return the Piece of that representation
    */
   public static Piece getByChar(char piece) {
-    switch(piece) {
+    switch (piece) {
       case 'p':
         return new Pawn();
       case 'R':
@@ -60,6 +63,15 @@ public class Piece {
   }
 
   /**
+   * Tells if this is the pieces first move
+   *
+   * @return first move
+   */
+  public boolean isFirst() {
+    return firstMove;
+  }
+
+  /**
    * Sets the color of the piece
    *
    * @param whiteBlack true = white false = black
@@ -71,8 +83,8 @@ public class Piece {
   /**
    * Sets the first move to be false
    */
-  public void setFirst(boolean firstMove) {
-    this.firstMove = firstMove;
+  public void setFirst() {
+    firstMove = false;
   }
 
   /**
@@ -80,18 +92,18 @@ public class Piece {
    *
    * @param str the short hand of the piece
    */
-  public void setShorthand(String str) {
+  void setShorthand(char str) {
+    //TODO add some input checks here
     shorthand = str;
   }
 
-
   /**
-   * Tells if this is the pieces first move
+   * Sets the number identifier of the piece
    *
-   * @return first move
+   * @param identifier number identifier of the piece
    */
-  public boolean isFirst() {
-    return firstMove;
+  void setNonce(int identifier) {
+    nonce = identifier;
   }
 
   /**
@@ -103,6 +115,10 @@ public class Piece {
     return WB;
   }
 
+  char colorRep() {
+    return getColor() ? '+' : '-';
+  }
+
   /**
    * Returns the shorthand of the piece
    * +p+ for White
@@ -110,18 +126,17 @@ public class Piece {
    *
    * @return the piece representation
    */
-  public String getShorthand() {
-    char colorRep = (WB ? '+' : '-');
-    return colorRep + shorthand + colorRep;
+  public char getShorthand() {
+    return shorthand;
   }
 
   /**
-   * Will flip the first move flag
+   * Gets the identifier on the piece
+   *
+   * @return identification number
    */
-  public void flipFirst() {
-    if(firstMove) {
-      firstMove = false;
-    }
+  public int getNonce() {
+    return nonce;
   }
 
   /**
@@ -130,8 +145,42 @@ public class Piece {
    * @return Set of possible move locations
    */
   //TODO comment moveSets for each piece
-  public Set<Tile> moveSet(Tile t) {
-    return new HashSet<>();
+  public abstract Set<Tile> moveSet(Tile t);
+
+  Set<Tile> straightMoves(Tile t) {
+    Set<Tile> moves = new HashSet<>();
+
+    for(int i = 1; i < MAXNUMMOVES; i++) {
+      if(i != t.getRow()) {
+        moves.add(new Tile(i, t.getCol()));
+      }
+
+      if(i != t.getCol()) {
+        moves.add(new Tile(t.getRow(), i));
+      }
+    }
+
+    return moves;
+  }
+
+
+  Set<Tile> diagonalMoves(Tile t) {
+    Set<Tile> moves = new HashSet<>();
+
+    for (int i = 1; i <= MAXNUMMOVES - t.getRow() && i <= MAXNUMMOVES - t.getCol(); i++) {
+      moves.add(new Tile((t.getRow() + i), (t.getCol() + i)));
+    }
+    for (int i = 0; i <= MAXNUMMOVES - t.getRow() && i <= t.getCol(); i++) {
+      moves.add(new Tile((t.getRow() + i), (t.getCol() - i)));
+    }
+    for (int i = 0; i <= t.getRow() && i <= MAXNUMMOVES - t.getCol(); i++) {
+      moves.add(new Tile((t.getRow() - i), (t.getCol() + i)));
+    }
+    for (int i = 0; i <= t.getRow() && i <= t.getCol(); i++) {
+      moves.add(new Tile((t.getRow() - i), (t.getCol() - i)));
+    }
+
+    return moves;
   }
 
   @Override
@@ -144,21 +193,23 @@ public class Piece {
 
   @Override
   public boolean equals(Object obj) {
-    if(this == obj) {
+    if (this == obj) {
       return true;
     }
-    if(obj == null || getClass() != obj.getClass()) {
+    if (obj == null || getClass() != obj.getClass()) {
       return false;
     }
 
     Piece p = (Piece) obj;
-    return getShorthand().equals(p.getShorthand()) &&
-            getColor() == p.getColor() &&
-            nonce == p.nonce;
+    return getShorthand() == p.getShorthand() &&
+        getColor() == p.getColor() &&
+        nonce == p.nonce;
   }
 
   @Override
   public String toString() {
-    return getShorthand();
+    return String.valueOf(colorRep()) +
+        shorthand +
+        colorRep();
   }
 }
