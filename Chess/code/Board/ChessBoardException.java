@@ -7,7 +7,8 @@ package Board;
 
 public class ChessBoardException extends Exception {
 
-  public ChessBoardException() {}
+  public ChessBoardException() {
+  }
 
   public ChessBoardException(String msg) {
     super(msg);

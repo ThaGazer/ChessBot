@@ -43,19 +43,19 @@ public abstract class Piece {
    * @param piece the char representation
    * @return the Piece of that representation
    */
-  public static Piece getByChar(char piece) {
-    switch (piece) {
+  public static Piece getByChar(char piece, boolean color) {
+    switch (Character.toLowerCase(piece)) {
       case 'p':
-        return new Pawn();
-      case 'R':
+        return new Pawn(color);
+      case 'r':
         return new Rook();
-      case 'N':
+      case 'n':
         return new Knight();
-      case 'B':
+      case 'b':
         return new Bishop();
-      case 'Q':
+      case 'q':
         return new Queen();
-      case 'K':
+      case 'k':
         return new King();
       default:
         throw new IllegalArgumentException(errPiece);
@@ -67,7 +67,7 @@ public abstract class Piece {
    *
    * @return first move
    */
-  private boolean isFirst() {
+  public boolean isFirst() {
     return firstMove;
   }
 
