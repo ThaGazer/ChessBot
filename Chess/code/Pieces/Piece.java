@@ -8,12 +8,9 @@ import java.util.Set;
 //TODO input checks
 public abstract class Piece {
 
-  private static final String errPiece = "unexpected piece";
-
   private static final int MAXNUMMOVES = 8;
 
   private boolean WB;          /*true: white false: black*/
-  private int nonce;
   private boolean firstMove = true;
   private char shorthand;
 
@@ -21,45 +18,18 @@ public abstract class Piece {
    * Default constructor
    */
   public Piece() {
-    this(true, '-', 0);
+    this(true, '-');
   }
 
   /**
    * Parameter Constructor
    *
-   * @param color      of the piece (true=white : false=black)
-   * @param shorthand  visual representation of the piece
-   * @param identifier identifies between duplicated pieces. (Rook 1 or Rook 2)
+   * @param color of the piece (true=white : false=black)
+   * @param shorthand visual representation of the piece
    */
-  public Piece(boolean color, char shorthand, int identifier) {
+  public Piece(boolean color, char shorthand) {
     setColor(color);
     setShorthand(shorthand);
-    setNonce(identifier);
-  }
-
-  /**
-   * Gets a Piece based off its char representation
-   *
-   * @param piece the char representation
-   * @return the Piece of that representation
-   */
-  public static Piece getByChar(char piece, boolean color) {
-    switch (Character.toLowerCase(piece)) {
-      case 'p':
-        return new Pawn(color);
-      case 'r':
-        return new Rook();
-      case 'n':
-        return new Knight();
-      case 'b':
-        return new Bishop();
-      case 'q':
-        return new Queen();
-      case 'k':
-        return new King();
-      default:
-        throw new IllegalArgumentException(errPiece);
-    }
   }
 
   /**
@@ -98,15 +68,6 @@ public abstract class Piece {
   }
 
   /**
-   * Sets the number identifier of the piece
-   *
-   * @param identifier number identifier of the piece
-   */
-  private void setNonce(int identifier) {
-    nonce = identifier;
-  }
-
-  /**
    * Returns the color of the piece
    *
    * @return true = white false = black
@@ -131,15 +92,6 @@ public abstract class Piece {
   }
 
   /**
-   * Gets the identifier on the piece
-   *
-   * @return identification number
-   */
-  public int getNonce() {
-    return nonce;
-  }
-
-  /**
    * A set of all possible move locations for this piece
    *
    * @return Set of possible move locations
@@ -150,12 +102,12 @@ public abstract class Piece {
   Set<Tile> straightMoves(Tile t) {
     Set<Tile> moves = new HashSet<>();
 
-    for(int i = 1; i < MAXNUMMOVES; i++) {
-      if(i != t.getRow()) {
+    for (int i = 1; i < MAXNUMMOVES; i++) {
+      if (i != t.getRow()) {
         moves.add(new Tile(i, t.getCol()));
       }
 
-      if(i != t.getCol()) {
+      if (i != t.getCol()) {
         moves.add(new Tile(t.getRow(), i));
       }
     }
@@ -186,9 +138,7 @@ public abstract class Piece {
   @Override
   public int hashCode() {
     int prime = 31;
-    int sum = prime + Boolean.hashCode(WB);
-    sum += prime * sum + nonce;
-    return sum;
+    return prime + Boolean.hashCode(WB);
   }
 
   @Override
@@ -202,8 +152,7 @@ public abstract class Piece {
 
     Piece p = (Piece) obj;
     return getShorthand() == p.getShorthand() &&
-        getColor() == p.getColor() &&
-        nonce == p.nonce;
+        getColor() == p.getColor();
   }
 
   @Override

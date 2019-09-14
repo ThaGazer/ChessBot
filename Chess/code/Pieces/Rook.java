@@ -10,15 +10,15 @@ public class Rook extends Piece {
   private static final char representation = 'R';
 
   public Rook() {
-    this(true, 0);
+    this(true);
   }
 
-  public Rook(boolean color, int identifier) {
-    this(color, representation, identifier);
+  public Rook(boolean color) {
+    this(color, representation);
   }
 
-  private Rook(boolean color, char shortHand, int identifier) {
-    super(color, shortHand, identifier);
+  private Rook(boolean color, char shortHand) {
+    super(color, shortHand);
   }
 
   @Override

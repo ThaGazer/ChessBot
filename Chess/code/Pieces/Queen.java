@@ -10,15 +10,15 @@ public class Queen extends Piece {
   private static final char representation = 'Q';
 
   public Queen() {
-    this(true, 0);
+    this(true);
   }
 
-  public Queen(boolean color, int identifier) {
-    this(color, representation, identifier);
+  public Queen(boolean color) {
+    this(color, representation);
   }
 
-  private Queen(boolean color, char shortHand, int identifier) {
-    super(color, shortHand, identifier);
+  private Queen(boolean color, char shortHand) {
+    super(color, shortHand);
   }
 
   @Override

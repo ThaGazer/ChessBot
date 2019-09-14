@@ -10,15 +10,15 @@ public class King extends Piece {
   private static final char representation = 'K';
 
   public King() {
-    this(true, 0);
+    this(true);
   }
 
-  public King(boolean color, int identifier) {
-    this(color, representation, identifier);
+  public King(boolean color) {
+    this(color, representation);
   }
 
-  private King(boolean color, char shortHand, int identifier) {
-    super(color, shortHand, identifier);
+  private King(boolean color, char shortHand) {
+    super(color, shortHand);
   }
 
   @Override

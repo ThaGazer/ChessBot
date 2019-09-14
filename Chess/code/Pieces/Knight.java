@@ -13,15 +13,15 @@ public class Knight extends Piece {
    * Default constructor
    */
   public Knight() {
-    this(true, 0);
+    this(true);
   }
 
-  public Knight(boolean color, int identifier) {
-    this(color, representation, identifier);
+  public Knight(boolean color) {
+    this(color, representation);
   }
 
-  private Knight(boolean color, char shortHand, int identifier) {
-    super(color, shortHand, identifier);
+  private Knight(boolean color, char shortHand) {
+    super(color, shortHand);
   }
 
   @Override

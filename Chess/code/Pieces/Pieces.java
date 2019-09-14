@@ -16,22 +16,26 @@ public enum Pieces {
     numRep = x;
   }
 
-  public static Piece getByNumRep(int x) {
+  public static Piece getByEnum(Pieces x, boolean color) {
     switch (x) {
-      case 1:
-        return new Pawn();
-      case 2:
-        return new Knight();
-      case 3:
-        return new Bishop();
-      case 4:
-        return new Rook();
-      case 5:
-        return new Queen();
-      case 6:
-        return new Knight();
+      case PAWN:
+        return new Pawn(color);
+      case KNIGHT:
+        return new Knight(color);
+      case BISHOP:
+        return new Bishop(color);
+      case ROOK:
+        return new Rook(color);
+      case QUEEN:
+        return new Queen(color);
+      case KING:
+        return new King(color);
       default:
         throw new IllegalArgumentException(errPieceRep);
     }
+  }
+
+  public static Pieces[] pieceOrder() {
+    return new Pieces[]{ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK};
   }
 }

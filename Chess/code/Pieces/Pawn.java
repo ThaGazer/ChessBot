@@ -10,15 +10,15 @@ public class Pawn extends Piece {
   private static final char representation = 'P';
 
   public Pawn() {
-    this(true, 0);
+    this(true);
   }
 
-  public Pawn(boolean color, int identifier) {
-    this(color, representation, identifier);
+  public Pawn(boolean color) {
+    this(color, representation);
   }
 
-  private Pawn(boolean color, char shortHand, int identifier) {
-    super(color, shortHand, identifier);
+  private Pawn(boolean color, char shortHand) {
+    super(color, shortHand);
   }
 
   @Override
