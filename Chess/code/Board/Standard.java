@@ -15,7 +15,8 @@ public class Standard {
   private static final boolean WHITE = true;
   private static final boolean BLACK = false;
 
-  private static final String errTileFormat = "improper tile formatting: ";
+  private static final String errTileFormat = "TILE FORMATTING: ";
+  private static final String errUnknownTile = "unrecognized tile reference";
   private static final String errMissingPiece = "could not find piece referenced: ";
 
   private static final String gameBoard_edge =
@@ -96,11 +97,15 @@ public class Standard {
     return new ArrayList<>(board);
   }
 
-  public Tile getTile(String tile) {
+  public Tile getTile(String tile) throws ChessBoardException {
+    if(tile.length() != 2) {
+      throw new ChessBoardException(errTileFormat + errUnknownTile);
+    }
+
     return board.get(Tile.Columns.getByAlpha(tile.charAt(0)).getNumberRep() * tile.charAt(1));
   }
 
-  public boolean movePiece()
+  public boolean movePiece(String in)
       throws ChessBoardException {
     return true;
   }

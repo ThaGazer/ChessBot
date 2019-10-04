@@ -16,18 +16,18 @@ import java.util.Scanner;
 public class Chess {
 
   private static final String msgMenu = "Available Commands" +
-          "\n-help\n-next\n-quit\n-movePiece\n" +
-          "\nDescription:\n" +
-          "help: prints this help menu\n" +
-          "quit: will stop execution of the program\n" +
-          "movePiece: To move a piece follow the following style [piece][nonce][tile] \n" +
-          "           *there is no need to type in 'movePiece' to move a piece\n" +
-          "  where:\n" +
-          "    [piece]: pawn='' Rook='R' Knight='N' Bishop='B' Queen='Q' King='K'\n" +
-          "    [nonce]: if two piece can reach the same tile the nonce is '1'\n" +
-          "             for lowest rank and '2' for highest rank\n" +
-          "    [tile]: column='a-h' row='1-8'\n" +
-          "press 'q' to return to current game";
+      "\n-help\n-next\n-quit\n-movePiece\n" +
+      "\nDescription:\n" +
+      "help: prints this help menu\n" +
+      "quit: will stop execution of the program\n" +
+      "movePiece: To move a piece follow the following style [piece][nonce][tile] \n" +
+      "           *there is no need to type in 'movePiece' to move a piece\n" +
+      "  where:\n" +
+      "    [piece]: pawn='' Rook='R' Knight='N' Bishop='B' Queen='Q' King='K'\n" +
+      "    [nonce]: if two piece can reach the same tile the nonce is '1'\n" +
+      "             for lowest rank and '2' for highest rank\n" +
+      "    [tile]: column='a-h' row='1-8'\n" +
+      "press 'q' to return to current game";
   private static final String msgWhite = "White ";
   private static final String msgBlack = "Black ";
   private static final String msgPrevMove = "played: ";
@@ -35,8 +35,10 @@ public class Chess {
   private static final String msgQuit = "quiting...";
 
   private static final String errWarning = "WARNING: ";
+  private static final String errSever = "SEVER: ";
   private static final String errUnReachableTile = "unreachable tile";
   private static final String errTilteFormat = "improper input format";
+  private static final String errUnexpectedErr = "something really bad happened";
 
   private static Standard board;
 
@@ -55,33 +57,36 @@ public class Chess {
       //operates off of user input
       try {
         playOn = m.userOp(scn);
-      } catch(ChessBoardException cbe) {
+      } catch (ChessBoardException cbe) {
         playOn = true;
         System.err.println(errWarning + errUnReachableTile);
-      } catch(IllegalArgumentException iae) {
+      } catch (IllegalArgumentException iae) {
         playOn = true;
         System.err.println(errWarning + errTilteFormat);
+      } catch (Exception e) {
+        playOn = false;
+        System.err.println(errWarning + errUnexpectedErr);
       }
 
-    } while(playOn);
+    } while (playOn);
   }
 
   private boolean printMenu(Scanner scn) {
     do {
       System.out.println(msgMenu);
       System.out.print(msgNextCommand);
-    } while(!scn.nextLine().equals("q"));
+    } while (!scn.nextLine().equals("q"));
     return true;
   }
 
   private boolean userOp(Scanner scn) throws ChessBoardException {
-    if(preMove != null) {
+    if (preMove != null) {
       System.out.println(getTurnMsg(!getTurn()) + msgPrevMove + preMove);
     }
     System.out.print(getTurnMsg(getTurn()) + msgNextCommand);
     String line = scn.nextLine().toLowerCase();
 
-    switch(line) {
+    switch (line) {
       case "help":
       case "h":
         return printMenu(scn);
@@ -93,25 +98,23 @@ public class Chess {
       case "n":
         return newGame();
       default:
-        boolean ret = movePiece(line);
-        setTurn();
-        return ret;
+        return movePiece(line);
     }
   }
 
   //TODO detect collision
   //TODO piece capture
   private boolean movePiece(String line) throws ChessBoardException {
-    if(line.split(" ").length > 1) {
+    if (line.split(" ").length > 1) {
       throw new IllegalArgumentException();
     }
 
     boolean ret;
     Tile pieceToMove = board.getTile(line);
 
-    switch(line.length()) {
+    switch (line.length()) {
       case 2:
-        ret = board.movePiece(new Pawn(), pieceToMove, getTurn());
+        ret = board.movePiece(line);
         preMove = pieceToMove;
         break;
       case 3:
@@ -123,6 +126,9 @@ public class Chess {
       default:
         throw new ChessBoardException();
     }
+
+    setTurn();
+
     return ret;
   }
 
