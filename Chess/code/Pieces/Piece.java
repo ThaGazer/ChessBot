@@ -32,6 +32,10 @@ public abstract class Piece {
     setShorthand(shorthand);
   }
 
+  public boolean is(Pieces pieceEnumeration) {
+    return equals(Pieces.getByEnum(pieceEnumeration, getColor()));
+  }
+
   /**
    * Tells if this is the pieces first move
    *
