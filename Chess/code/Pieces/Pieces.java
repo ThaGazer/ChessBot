@@ -5,10 +5,12 @@
  */
 package Pieces;
 
+import Board.ChessBoardException;
+
 public enum Pieces {
   PAWN(1), KNIGHT(2), BISHOP(3), ROOK(4), QUEEN(5), KING(6);
 
-  public static final String errPieceRep = "unrecognized piece rep";
+  private static final String errPieceRep = "unrecognized piece rep";
 
   int numRep;
 
@@ -35,7 +37,36 @@ public enum Pieces {
     }
   }
 
-  public static Pieces[] pieceOrder() {
+  public static Piece getByChar(String x, boolean color) {
+    Pieces piece;
+    if (x.length() == 2) {
+      piece = PAWN;
+    } else {
+      switch (x.toLowerCase().charAt(0)) {
+        case 'r':
+          piece = ROOK;
+          break;
+        case 'n':
+          piece = KNIGHT;
+          break;
+        case 'b':
+          piece = BISHOP;
+          break;
+        case 'q':
+          piece = QUEEN;
+          break;
+        case 'k':
+          piece = KING;
+          break;
+        default:
+          throw new IllegalArgumentException(errPieceRep);
+      }
+    }
+
+    return getByEnum(piece, color);
+  }
+
+  public static Pieces[] piecePlacementOrder() {
     return new Pieces[]{ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK};
   }
 }
