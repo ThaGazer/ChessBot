@@ -1,29 +1,48 @@
 /*
  * Author: ThaGazer
- * File: StandardBoardTest.java
+ * File: Board.StandardBoardTest.java
  * Date: 12/1/2018
  */
+package Board;
 
-import Models.Board.Standard;
-import org.junit.jupiter.api.BeforeEach;
+import Models.Board.*;
+import Models.Pieces.Pawn;
+import Models.Pieces.Piece;
+import Models.Pieces.Pieces;
 import org.junit.jupiter.api.Test;
+import java.util.List;
 
-class StandardBoardTest {
+import static org.junit.jupiter.api.Assertions.*;
 
-  private Standard board;
+class StandardBoardTest extends BaseBoardTest {
 
-  @BeforeEach
-  void setup() {
+  StandardBoardTest() throws ChessBoardException {
+    super();
+  }
+
+  @Override
+  void createBoard() throws ChessBoardException {
     board = new Standard();
   }
 
   @Test
-  void test_Standard_board() {
-    board.printBoard();
-  }
+  void testPieceFill() {
+    Pieces[] expectedPiecesOrder = Pieces.piecePlacementOrder();
+    List<Tile> boardArr = board.getBoard();
+    for(int i = 0 ; i < Base.BOARDLENGTH; i++) {
+      Piece wp = boardArr.get(i).getPiece();
+      Piece bp = boardArr.get(i + (Base.BOARDLENGTH*7)).getPiece();
 
-  @Test
-  void test_MovePiece() {
-    //TODO test movepiece
+      Piece wPawn = boardArr.get(i + Base.BOARDLENGTH).getPiece();
+      Piece bPawn = boardArr.get(i + (Base.BOARDLENGTH*6)).getPiece();
+
+      int finalI = i;
+      assertAll(() -> {
+        assertEquals(wp, Pieces.getByEnum(expectedPiecesOrder[finalI], Base.WHITE));
+        assertEquals(bp, Pieces.getByEnum(expectedPiecesOrder[finalI], Base.BLACK));
+        assertEquals(wPawn, new Pawn(Base.WHITE));
+        assertEquals(bPawn, new Pawn(Base.BLACK));
+      });
+    }
   }
 }

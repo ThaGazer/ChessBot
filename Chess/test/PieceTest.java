@@ -4,7 +4,6 @@
  * Date: 9/29/2018
  */
 
-import Pieces.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

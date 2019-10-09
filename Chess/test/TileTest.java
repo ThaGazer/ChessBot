@@ -39,12 +39,15 @@ class TileTest {
   void testColumns_valid() {
     assertAll(() -> {
       for (int i = 0; i < Tile.Columns.values().length; i++) {
-        assertEquals(Tile.getColumn(i + 1), Tile.Columns.values()[i]);
-        assertEquals(Tile.Columns.values()[i].getNumberRep(), i + 1);
+        int finalI = i;
+        assertAll(() -> {
+          assertEquals(Tile.getColumn(finalI +1), Tile.Columns.values()[finalI]);
+          assertEquals(Tile.Columns.values()[finalI].getNumberRep(), finalI);
+        });
       }
 
-      for (char a = 'a'; a < Tile.Columns.values().length + 'a'; a++) {
-        assertEquals(Tile.getColumn(a), Tile.Columns.values()[a - 'a']);
+      for (char column = 'a'; column < ('a' + Tile.Columns.values().length); column++) {
+        assertEquals(Tile.getColumn(column), Tile.Columns.values()[column - 'a']);
       }
     });
   }
