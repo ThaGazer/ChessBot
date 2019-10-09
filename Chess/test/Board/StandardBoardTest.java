@@ -4,7 +4,7 @@
  * Date: 12/1/2018
  */
 
-import Board.Standard;
+import Models.Board.Standard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
