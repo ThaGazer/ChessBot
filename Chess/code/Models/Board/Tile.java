@@ -13,6 +13,10 @@ public class Tile {
     this(r,c, null);
   }
 
+  public Tile(String tile) throws ChessBoardException {
+    this(tile.charAt(0), tile.charAt(1));
+  }
+
   public Tile(int c, int r, Piece piece) throws ChessBoardException {
     setRow(r);
     setCol(c);
@@ -47,6 +51,7 @@ public class Tile {
     }
   }
 
+  //TODO maybe some kind of input checks?
   public void setPiece(Piece piece) {
     pieceHolder = piece;
   }
