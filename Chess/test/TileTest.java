@@ -1,4 +1,4 @@
-import Board.Tile;
+import Models.Board.Tile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -38,12 +38,12 @@ class TileTest {
   void testColumns_valid() {
     assertAll(() -> {
       for (int i = 0; i < Tile.Columns.values().length; i++) {
-        assertEquals(Tile.Columns.getByNum(i + 1), Tile.Columns.values()[i]);
+        assertEquals(Tile.getColumn(i + 1), Tile.Columns.values()[i]);
         assertEquals(Tile.Columns.values()[i].getNumberRep(), i + 1);
       }
 
       for (char a = 'a'; a < Tile.Columns.values().length + 'a'; a++) {
-        assertEquals(Tile.Columns.getByAlpha(a), Tile.Columns.values()[a - 'a']);
+        assertEquals(Tile.getColumn(a), Tile.Columns.values()[a - 'a']);
       }
     });
   }
@@ -88,12 +88,12 @@ class TileTest {
       assertAll(() -> {
         //this is the legal range
         if (finalI < 1 || finalI > 8) {
-          assertThrows(IllegalArgumentException.class, () -> Tile.Columns.getByNum(finalI));
+          assertThrows(IllegalArgumentException.class, () -> System.out.println(Tile.getColumn(finalI)));
         }
 
         //this is the legal range
         if (finalI < 97 || finalI > 105) {
-          assertThrows(IllegalArgumentException.class, () -> Tile.Columns.getByAlpha((char) finalI));
+          assertThrows(IllegalArgumentException.class, () -> System.out.println(Tile.getColumn((char) finalI)));
         }
       });
     }

@@ -9,18 +9,18 @@ public class Tile {
   private int row, col;
   private Piece pieceHolder;
 
-  public Tile(int c, int r) {
+  public Tile(int c, int r) throws ChessBoardException {
     this(r,c, null);
   }
 
-  public Tile(int c, int r, Piece piece) {
+  public Tile(int c, int r, Piece piece) throws ChessBoardException {
     setRow(r);
     setCol(c);
     setPiece(piece);
   }
 
-  public Tile(Tile t) {
-    this(t.getRow(), t.getCol());
+  public Tile(Tile t) throws ChessBoardException {
+    this(t.getRow(), t.getCol(), t.getPiece());
   }
 
   public static Columns getColumn(char x) throws IllegalArgumentException {
@@ -31,19 +31,19 @@ public class Tile {
     return Columns.getByNum(x);
   }
 
-  public void setRow(int r) {
+  public void setRow(int r) throws ChessBoardException {
     if (r >= 1 && r <= 8) {
       row = r;
     } else {
-      throw new IllegalArgumentException(errBoardBounds + r);
+      throw new ChessBoardException(errBoardBounds + r);
     }
   }
 
-  public void setCol(int c) {
+  public void setCol(int c) throws ChessBoardException {
     if (c >= 1 && c <= 8) {
       col = c;
     } else {
-      throw new IllegalArgumentException(errBoardBounds + c);
+      throw new ChessBoardException(errBoardBounds + c);
     }
   }
 
