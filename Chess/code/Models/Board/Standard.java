@@ -1,19 +1,10 @@
-package Board;
+package Models.Board;
 
-import Pieces.*;
-
+import Models.Pieces.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
-public class Standard {
-
-  public static final int BOARDLENGTH = 8;
-  public static final int BOARDSIZE = BOARDLENGTH * BOARDLENGTH;
-
-  private static final boolean WHITE = true;
-  private static final boolean BLACK = false;
+public class Standard extends Base {
 
   private static final String errTileFormat = "TILE FORMATTING: ";
   private static final String errUnknownTile = "unrecognized tile reference";
@@ -22,52 +13,17 @@ public class Standard {
   private static final String gameBoard_edge =
       "  -------------------------------------------------";
 
-  private List<Tile> board;
-
   public Standard() {
-    board = new ArrayList<>(BOARDSIZE * BOARDSIZE);
-    fill_A_Board();
+    super();
   }
 
-  /**
-   * A key value mapping for a map
-   *
-   * @param map the map to search through
-   * @param val the value to search for
-   * @return the mapping for the specified value
-   */
-  private Piece getKfV(Map<Piece, Tile> map, Tile val) {
-    if (map.containsValue(val)) {
-      for (Piece p : map.keySet()) {
-        if (map.get(p).equals(val)) {
-          return p;
-        }
-      }
-    }
-    return null;
-  }
-
-  private void fill_A_Board() {
-    int row = 0;
-    int col = 0;
-    for (int i = 0; i < BOARDSIZE; i++) {
-      if (i % BOARDLENGTH == 0) {
-        row++;
-        col = 1;
-      }
-      board.add(new Tile(row, col));
-      col++;
-    }
-    fill_In_Pieces();
-  }
-
-  private void fill_In_Pieces() {
+  protected void fill_In_Pieces() {
     for(int i = 0; i < BOARDLENGTH; i++) {
-      board.get(((BOARDLENGTH * 7)) + i).setPiece(Pieces.getByEnum(Pieces.pieceOrder()[i], BLACK));
+      board.get(((BOARDLENGTH * 7)) + i).setPiece(Pieces.getByEnum(Pieces.piecePlacementOrder()[i], BLACK));
       board.get((BOARDLENGTH * 6) + i) .setPiece(new Pawn(BLACK));
 
       board.get(BOARDLENGTH + i).setPiece(new Pawn(WHITE));
-      board.get(i).setPiece(Pieces.getByEnum(Pieces.pieceOrder()[i], WHITE));
+      board.get(i).setPiece(Pieces.getByEnum(Pieces.piecePlacementOrder()[i], WHITE));
     }
   }
 
@@ -88,7 +44,7 @@ public class Standard {
     System.out.println(gameBoard_edge);
 
     for (int i = 1; i <= BOARDLENGTH; i++) {
-      System.out.print("     " + Tile.Columns.getByNum(i));
+      System.out.print("     " + Tile.getColumn(i));
     }
     System.out.println();
   }
@@ -102,10 +58,11 @@ public class Standard {
       throw new ChessBoardException(errTileFormat + errUnknownTile);
     }
 
-    return board.get(Tile.Columns.getByAlpha(tile.charAt(0)).getNumberRep() * tile.charAt(1));
+    return board.get(Tile.getColumn(tile.charAt(0)).getNumberRep() + ((Character.getNumericValue(tile.charAt(1))-1) * BOARDLENGTH));
   }
 
-  public boolean movePiece(String in)
+  //TODO wip
+  public boolean movePiece(Piece pieceToMove, Tile futureTile, boolean turn)
       throws ChessBoardException {
     return true;
   }

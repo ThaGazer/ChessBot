@@ -3,9 +3,7 @@
  * File:Pieces/null.java
  * Date: 12/1/2018
  */
-package Pieces;
-
-import Board.ChessBoardException;
+package Models.Pieces;
 
 public enum Pieces {
   PAWN(1), KNIGHT(2), BISHOP(3), ROOK(4), QUEEN(5), KING(6);

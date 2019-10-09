@@ -1,8 +1,7 @@
-package Pieces;
+package Models.Pieces;
 
-import Board.Tile;
+import Models.Board.Tile;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class Bishop extends Piece {

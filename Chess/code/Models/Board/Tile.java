@@ -1,6 +1,6 @@
-package Board;
+package Models.Board;
 
-import Pieces.Piece;
+import Models.Pieces.Piece;
 
 public class Tile {
 
@@ -21,6 +21,14 @@ public class Tile {
 
   public Tile(Tile t) {
     this(t.getRow(), t.getCol());
+  }
+
+  public static Columns getColumn(char x) throws IllegalArgumentException {
+    return Columns.getByAlpha(x);
+  }
+
+  public static Columns getColumn(int x) throws IllegalArgumentException {
+    return Columns.getByNum(x);
   }
 
   public void setRow(int r) {
@@ -84,7 +92,7 @@ public class Tile {
   }
 
   public enum Columns {
-    a(1), b(2), c(3), d(4), e(5), f(6), g(7), h(8);
+    a(0), b(1), c(2), d(3), e(4), f(5), g(6), h(7);
 
     private int numberRep;
 
@@ -92,7 +100,7 @@ public class Tile {
       numberRep = num;
     }
 
-    public static Columns getByNum(int i) {
+    private static Columns getByNum(int i) {
       switch (i) {
         case 1:
           return a;
@@ -115,7 +123,7 @@ public class Tile {
       }
     }
 
-    public static Columns getByAlpha(char x) {
+    private static Columns getByAlpha(char x) {
       switch (x) {
         case 'a':
           return a;

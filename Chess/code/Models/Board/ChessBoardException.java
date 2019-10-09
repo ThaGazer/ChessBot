@@ -3,7 +3,7 @@
  * File:Board/null.java
  * Date: 12/2/2018
  */
-package Board;
+package Models.Board;
 
 public class ChessBoardException extends Exception {
 
