@@ -27,12 +27,12 @@ public class Tile {
     this(t.getRow(), t.getCol(), t.getPiece());
   }
 
-  public static Columns getColumn(char x) throws IllegalArgumentException {
-    return Columns.getByAlpha(x);
+  public static COLUMNS getColumn(char x) throws IllegalArgumentException {
+    return COLUMNS.getByAlpha(x);
   }
 
-  public static Columns getColumn(int x) throws IllegalArgumentException {
-    return Columns.getByNum(x);
+  public static COLUMNS getColumn(int x) throws IllegalArgumentException {
+    return COLUMNS.getByNum(x);
   }
 
   public void setRow(int r) throws ChessBoardException {
@@ -93,59 +93,59 @@ public class Tile {
 
   @Override
   public String toString() {
-    return Columns.getByNum(getCol()).toString() + getRow();
+    return COLUMNS.getByNum(getCol()).toString() + getRow();
   }
 
-  public enum Columns {
-    a(0), b(1), c(2), d(3), e(4), f(5), g(6), h(7);
+  public enum COLUMNS {
+    A(0), B(1), C(2), D(3), E(4), F(5), G(6), H(7);
 
     private int numberRep;
 
-    Columns(int num) {
+    COLUMNS(int num) {
       numberRep = num;
     }
 
-    private static Columns getByNum(int i) {
+    private static COLUMNS getByNum(int i) {
       switch (i) {
         case 1:
-          return a;
+          return A;
         case 2:
-          return b;
+          return B;
         case 3:
-          return c;
+          return C;
         case 4:
-          return d;
+          return D;
         case 5:
-          return e;
+          return E;
         case 6:
-          return f;
+          return F;
         case 7:
-          return g;
+          return G;
         case 8:
-          return h;
+          return H;
         default:
           throw new IllegalArgumentException(errBoardBounds);
       }
     }
 
-    private static Columns getByAlpha(char x) {
+    private static COLUMNS getByAlpha(char x) {
       switch (x) {
         case 'a':
-          return a;
+          return A;
         case 'b':
-          return b;
+          return B;
         case 'c':
-          return c;
+          return C;
         case 'd':
-          return d;
+          return D;
         case 'e':
-          return e;
+          return E;
         case 'f':
-          return f;
+          return F;
         case 'g':
-          return g;
+          return G;
         case 'h':
-          return h;
+          return H;
         default:
           throw new IllegalArgumentException(errBoardBounds);
       }
