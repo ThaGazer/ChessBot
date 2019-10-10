@@ -1,26 +1,31 @@
 package Models.Board;
 
+import Models.Pieces.Piece;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Base {
 
-  protected static final int BOARDLENGTH = 8;
-  protected static final int BOARDSIZE = BOARDLENGTH * BOARDLENGTH;
+  public static final int BOARDLENGTH = 8;
+  private static final int BOARDSIZE = BOARDLENGTH * BOARDLENGTH;
 
-  protected static final boolean WHITE = true;
-  protected static final boolean BLACK = false;
+  public static final boolean WHITE = true;
+  public static final boolean BLACK = false;
+
+  private static final String errNull = "null object";
+  private static final String errTileFormat = "TILE FORMATTING: ";
+  private static final String errUnknownTile = "unrecognized tile reference";
 
   protected List<Tile> board;
 
-  public Base() {
+  Base() throws ChessBoardException {
     board = new ArrayList<>(BOARDSIZE);
     fill_A_Board();
     fill_In_Pieces();
   }
 
-
-  private void fill_A_Board() {
+  private void fill_A_Board() throws ChessBoardException {
     int row = 0;
     int col = 0;
     for (int i = 0; i < BOARDSIZE; i++) {
@@ -35,5 +40,24 @@ public abstract class Base {
 
   abstract void fill_In_Pieces();
 
-  public abstract List<Tile> getBoard();
+  abstract boolean movePiece(Piece pieceToMove, Tile futureTile, boolean turn)
+      throws ChessBoardException;
+
+  public List<Tile> getBoard() {
+    return List.copyOf(board);
+  }
+
+  public Tile getTile(String tile) throws ChessBoardException {
+    if(tile == null) {
+      throw new IllegalArgumentException(errNull);
+    }
+    if(tile.length() != 2) {
+      throw new ChessBoardException(errTileFormat + errUnknownTile);
+    }
+
+    return board.get(Tile.getColumn(tile.charAt(0)).getNumberRep() +
+        ((Character.getNumericValue(tile.charAt(1))-1) * BOARDLENGTH));
+  }
+
+  //TODO maybe equals/hashcode
 }

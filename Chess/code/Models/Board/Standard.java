@@ -1,19 +1,12 @@
 package Models.Board;
 
 import Models.Pieces.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Standard extends Base {
 
-  private static final String errTileFormat = "TILE FORMATTING: ";
-  private static final String errUnknownTile = "unrecognized tile reference";
   private static final String errMissingPiece = "could not find piece referenced: ";
 
-  private static final String gameBoard_edge =
-      "  -------------------------------------------------";
-
-  public Standard() {
+  public Standard() throws ChessBoardException {
     super();
   }
 
@@ -25,40 +18,6 @@ public class Standard extends Base {
       board.get(BOARDLENGTH + i).setPiece(new Pawn(WHITE));
       board.get(i).setPiece(Pieces.getByEnum(Pieces.piecePlacementOrder()[i], WHITE));
     }
-  }
-
-  public void printBoard() {
-    System.out.println(gameBoard_edge);
-    for (int i = BOARDSIZE - 8; i >= 0; i -= 8) {
-      System.out.print((i / BOARDLENGTH) + 1 + " ");
-      for (int j = 0; j < 8; j++) {
-        Piece piece;
-        if((piece = board.get(i+j).getPiece()) == null) {
-          System.out.print("| " + " -  ");
-        } else {
-          System.out.print("| " + piece.toString() + " ");
-        }
-      }
-      System.out.println("|");
-    }
-    System.out.println(gameBoard_edge);
-
-    for (int i = 1; i <= BOARDLENGTH; i++) {
-      System.out.print("     " + Tile.getColumn(i));
-    }
-    System.out.println();
-  }
-
-  public List<Tile> getBoard() {
-    return new ArrayList<>(board);
-  }
-
-  public Tile getTile(String tile) throws ChessBoardException {
-    if(tile.length() != 2) {
-      throw new ChessBoardException(errTileFormat + errUnknownTile);
-    }
-
-    return board.get(Tile.getColumn(tile.charAt(0)).getNumberRep() + ((Character.getNumericValue(tile.charAt(1))-1) * BOARDLENGTH));
   }
 
   //TODO wip
