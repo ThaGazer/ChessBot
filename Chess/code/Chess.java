@@ -4,92 +4,88 @@
  * Date: 12/1/2018
  */
 
-import Board.ChessBoardException;
-import Board.Standard;
-import Board.Tile;
-import Pieces.Pawn;
-
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.Scanner;
+
+import Models.Board.Base;
+import Models.Board.ChessBoardException;
+import Models.Board.Standard;
+import Models.Board.Tile;
+import UI.UserInput;
+import UI.Visuals;
 
 //TODO comment everything
 
-public class Chess {
+public class Chess implements Closeable {
 
-  private static final String msgMenu = "Available Commands" +
-      "\n-help\n-next\n-quit\n-movePiece\n" +
-      "\nDescription:\n" +
-      "help: prints this help menu\n" +
-      "quit: will stop execution of the program\n" +
-      "movePiece: To move a piece follow the following style [piece][nonce][tile] \n" +
-      "           *there is no need to type in 'movePiece' to move a piece\n" +
-      "  where:\n" +
-      "    [piece]: pawn='' Rook='R' Knight='N' Bishop='B' Queen='Q' King='K'\n" +
-      "    [nonce]: if two piece can reach the same tile the nonce is '1'\n" +
-      "             for lowest rank and '2' for highest rank\n" +
-      "    [tile]: column='a-h' row='1-8'\n" +
-      "press 'q' to return to current game";
-  private static final String msgWhite = "White ";
-  private static final String msgBlack = "Black ";
-  private static final String msgPrevMove = "played: ";
-  private static final String msgNextCommand = ":> ";
+
   private static final String msgQuit = "quiting...";
 
   private static final String errWarning = "WARNING: ";
   private static final String errSever = "SEVER: ";
-  private static final String errUnReachableTile = "unreachable tile";
-  private static final String errTilteFormat = "improper input format";
   private static final String errUnexpectedErr = "something really bad happened";
 
-  private static Standard board;
-
+  private Base board;
+  private Scanner scn;
   private Tile preMove;
   private boolean PlayerTurn = true; /*true=white false=black*/
 
   public static void main(String[] args) {
-    Chess m = new Chess();
-    board = new Standard();
-    boolean playOn;
-    Scanner scn = new Scanner(System.in);
-
-    do {
-      board.printBoard();
-
-      //operates off of user input
-      try {
-        playOn = m.userOp(scn);
-      } catch (ChessBoardException cbe) {
-        playOn = true;
-        System.err.println(errWarning + errUnReachableTile);
-      } catch (IllegalArgumentException iae) {
-        playOn = true;
-        System.err.println(errWarning + errTilteFormat);
-      } catch (Exception e) {
-        playOn = false;
-        System.err.println(errWarning + errUnexpectedErr);
-      }
-
-    } while (playOn);
+    try(Chess m = new Chess(new Standard())) {
+      m.play();
+    } catch(ChessBoardException | IOException e) {
+      e.printStackTrace();
+    }
   }
 
-  private boolean printMenu(Scanner scn) {
-    do {
-      System.out.println(msgMenu);
-      System.out.print(msgNextCommand);
-    } while (!scn.nextLine().equals("q"));
+  private Chess(Base newBoard) {
+    scn = new Scanner(System.in);
+    board = newBoard;
+  }
+
+  private void play() {
+    try {
+      board = new Standard();
+      boolean playOn;
+
+      do {
+        //TODO print board
+
+        //operates off of user input
+        try {
+          playOn = userOp(scn);
+        } catch(ChessBoardException | IllegalArgumentException cbe) {
+          playOn = true;
+          System.err.println(errWarning + cbe.getMessage());
+        } catch(Exception e) {
+          playOn = false;
+          System.err.println(errSever + errUnexpectedErr + e.getMessage());
+        }
+      } while(playOn);
+    } catch(Exception e) {
+      System.err.println(errSever + e.getMessage());
+    }
+  }
+
+  private boolean userOp(UserInput.COMMANDS command) {
+    switch(command) {
+      case HELP:
+      case NEXT:
+      case QUIT:
+      case MOVE:
+    }
     return true;
   }
 
   private boolean userOp(Scanner scn) throws ChessBoardException {
-    if (preMove != null) {
-      System.out.println(getTurnMsg(!getTurn()) + msgPrevMove + preMove);
-    }
-    System.out.print(getTurnMsg(getTurn()) + msgNextCommand);
+
     String line = scn.nextLine().toLowerCase();
 
-    switch (line) {
+    switch(line) {
       case "help":
       case "h":
-        return printMenu(scn);
+        Visuals.printHelpMenu(scn);
       case "quit":
       case "q":
         System.out.println(msgQuit);
@@ -98,41 +94,22 @@ public class Chess {
       case "n":
         return newGame();
       default:
-        return movePiece(line);
+        movePiece(line);
+        return true;
     }
   }
 
   //TODO detect collision
   //TODO piece capture
-  private boolean movePiece(String line) throws ChessBoardException {
-    if (line.split(" ").length > 1) {
+  private void movePiece(String line) throws ChessBoardException {
+    if(line.split(" ").length > 1) {
       throw new IllegalArgumentException();
     }
 
-    boolean ret;
-    Tile pieceToMove = board.getTile(line);
-
-    switch (line.length()) {
-      case 2:
-        ret = board.movePiece(line);
-        preMove = pieceToMove;
-        break;
-      case 3:
-        ret = true;
-        break;
-      case 4:
-        ret = true;
-        break;
-      default:
-        throw new ChessBoardException();
-    }
-
     setTurn();
-
-    return ret;
   }
 
-  private boolean newGame() {
+  private boolean newGame() throws ChessBoardException {
     board = new Standard();
     return true;
   }
@@ -141,11 +118,12 @@ public class Chess {
     return PlayerTurn;
   }
 
-  private String getTurnMsg(boolean turn) {
-    return turn ? msgWhite : msgBlack;
-  }
-
   private void setTurn() {
     PlayerTurn = !getTurn();
+  }
+
+  @Override
+  public void close() throws IOException {
+    scn.close();
   }
 }
