@@ -8,12 +8,15 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.Scanner;
 
-import Models.Board.Base;
 import Models.Board.ChessBoardException;
-import Models.Board.Standard;
 import Models.Board.Tile;
-import UI.UserInput;
+import Models.Board.Base;
+import Models.Board.Standard;
+import UI.CommandInput;
+import UI.MoveInput;
 import UI.Visuals;
+
+import static UI.CommandInput.COMMANDS;
 
 //TODO comment everything
 
@@ -29,32 +32,47 @@ public class Chess implements Closeable {
   private Base board;
   private Scanner scn;
   private Tile preMove;
-  private boolean PlayerTurn = true; /*true=white false=black*/
+  private boolean playerTurn; /*true=white false=black*/
 
   public static void main(String[] args) {
-    try(Chess m = new Chess(new Standard())) {
+    try(Chess m = new Chess()) {
+      m.intro();
+
       m.play();
-    } catch(ChessBoardException | IOException e) {
+    } catch(Exception e) {
       e.printStackTrace();
     }
   }
 
-  private Chess(Base newBoard) {
+  private Chess() {
     scn = new Scanner(System.in);
-    board = newBoard;
+    playerTurn = true;
+  }
+
+  private void intro() {
+    try {
+      Visuals.printTitleScreen();
+    } catch(InterruptedException e) {
+      e.printStackTrace();
+    }
+
+    try {
+      selectBoard();
+    } catch(ChessBoardException e) {
+      e.printStackTrace();
+    }
   }
 
   private void play() {
     try {
-      board = new Standard();
       boolean playOn;
-
       do {
-        //TODO print board
+        Visuals.printBoard(board);
 
+        Visuals.printPreviousMove(preMove);
         //operates off of user input
         try {
-          playOn = userOp(scn);
+          playOn = userOp(CommandInput.parse(scn.nextLine()));
         } catch(ChessBoardException | IllegalArgumentException cbe) {
           playOn = true;
           System.err.println(errWarning + cbe.getMessage());
@@ -68,45 +86,35 @@ public class Chess implements Closeable {
     }
   }
 
-  private boolean userOp(UserInput.COMMANDS command) {
-    switch(command) {
-      case HELP:
-      case NEXT:
-      case QUIT:
-      case MOVE:
-    }
-    return true;
+  //TODO take user input for board selection
+  private void selectBoard() throws ChessBoardException {
+    board = new Standard();
   }
 
-  private boolean userOp(Scanner scn) throws ChessBoardException {
-
-    String line = scn.nextLine().toLowerCase();
-
-    switch(line) {
-      case "help":
-      case "h":
-        Visuals.printHelpMenu(scn);
-      case "quit":
-      case "q":
+  private boolean userOp(CommandInput command) throws ChessBoardException {
+    switch(command.getCommand()) {
+      case HELP:
+        return Visuals.printHelpMenu(scn);
+      case NEXT:
+        return newGame();
+      case MOVE:
+        return movePiece(MoveInput.parse(command.getMove(), getTurn()));
+      case QUIT:
         System.out.println(msgQuit);
         return false;
-      case "next":
-      case "n":
-        return newGame();
       default:
-        movePiece(line);
-        return true;
+        throw new ChessBoardException(errUnexpectedErr);
     }
   }
 
   //TODO detect collision
   //TODO piece capture
-  private void movePiece(String line) throws ChessBoardException {
-    if(line.split(" ").length > 1) {
-      throw new IllegalArgumentException();
-    }
+  private boolean movePiece(MoveInput userMove) throws ChessBoardException {
+    boolean ret = board.movePiece(userMove.getPiece(), userMove.getTile(), userMove.getNonce(), getTurn());
 
     setTurn();
+
+    return ret;
   }
 
   private boolean newGame() throws ChessBoardException {
@@ -115,11 +123,11 @@ public class Chess implements Closeable {
   }
 
   private boolean getTurn() {
-    return PlayerTurn;
+    return playerTurn;
   }
 
   private void setTurn() {
-    PlayerTurn = !getTurn();
+    playerTurn = !getTurn();
   }
 
   @Override
