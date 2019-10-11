@@ -1,7 +1,6 @@
 package Models.Board;
 
 import Models.Pieces.Piece;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +14,8 @@ public abstract class Base {
 
   private static final String errNull = "null object";
   private static final String errTileFormat = "TILE FORMATTING: ";
-  private static final String errUnknownTile = "unrecognized tile reference";
+  private static final String errUnknownTile = "unrecognized tile reference: ";
+  private static final String errTileOOB = "tile reference out of board bounds: ";
 
   protected List<Tile> board;
 
@@ -49,14 +49,21 @@ public abstract class Base {
 
   public Tile getTile(String tile) throws ChessBoardException {
     if(tile == null) {
-      throw new IllegalArgumentException(errNull);
+      throw new IllegalArgumentException(errTileFormat + errNull);
     }
     if(tile.length() != 2) {
-      throw new ChessBoardException(errTileFormat + errUnknownTile);
+      throw new ChessBoardException(errTileFormat + errUnknownTile + tile);
     }
 
     return board.get(Tile.getColumn(tile.charAt(0)).getNumberRep() +
         ((Character.getNumericValue(tile.charAt(1))-1) * BOARDLENGTH));
+  }
+  
+  public Tile getTile(int tile) throws ChessBoardException {
+    if(tile < 0 || tile > BOARDSIZE) {
+      throw new ChessBoardException(errTileFormat + errTileOOB + tile);
+    }
+    return board.get(tile);
   }
 
   //TODO maybe equals/hashcode
