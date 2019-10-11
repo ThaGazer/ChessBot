@@ -1,20 +1,58 @@
 package UI;
 
-import java.util.Objects;
-import java.util.Scanner;
+import static UI.CommandInput.COMMANDS.*;
 
-import static UI.UserInput.COMMANDS.*;
+public class CommandInput {
 
-public class UserInput {
+  private COMMANDS command;
+  private String move;
 
-  private Scanner inputReader;
-
-  public UserInput(Scanner scn) {
-    inputReader = Objects.requireNonNull(scn);
+  private CommandInput(COMMANDS command) {
+    this(command, "");
   }
 
-  public COMMANDS parse() {
-    return HELP;
+  private CommandInput(COMMANDS command, String move) {
+    setCommand(command);
+    setMove(move);
+  }
+
+  public COMMANDS getCommand() {
+    return command;
+  }
+
+  public String getMove() {
+    return move;
+  }
+
+  private void setCommand(COMMANDS userCommand) {
+    command = userCommand;
+  }
+
+  private void setMove(String userMove) {
+    move = userMove;
+  }
+
+  public static CommandInput parse(String in) {
+    CommandInput command;
+
+    switch(in.toLowerCase()) {
+      case "help":
+      case "h":
+        command = new CommandInput(HELP);
+        break;
+      case "next":
+      case "n":
+        command = new CommandInput(NEXT);
+        break;
+      case "quit":
+      case "q":
+        command = new CommandInput(QUIT);
+        break;
+      default:
+        command = new CommandInput(MOVE);
+    }
+
+    return command;
   }
 
   public enum COMMANDS {
