@@ -21,7 +21,7 @@ public class Standard extends Base {
   }
 
   //TODO wip
-  public boolean movePiece(Piece pieceToMove, Tile futureTile, boolean turn)
+  public boolean movePiece(Piece pieceToMove, Tile futureTile, char pieceNonce, boolean turn)
       throws ChessBoardException {
     return true;
   }
