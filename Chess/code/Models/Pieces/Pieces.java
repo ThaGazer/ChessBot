@@ -35,30 +35,30 @@ public enum Pieces {
     }
   }
 
-  public static Piece getByChar(String x, boolean color) {
+  public static Piece getByChar(char x, boolean color) {
     Pieces piece;
-    if (x.length() == 2) {
-      piece = PAWN;
-    } else {
-      switch (x.toLowerCase().charAt(0)) {
-        case 'r':
-          piece = ROOK;
-          break;
-        case 'n':
-          piece = KNIGHT;
-          break;
-        case 'b':
-          piece = BISHOP;
-          break;
-        case 'q':
-          piece = QUEEN;
-          break;
-        case 'k':
-          piece = KING;
-          break;
-        default:
-          throw new IllegalArgumentException(errPieceRep);
-      }
+
+    switch (Character.toLowerCase(x)) {
+      case ' ':
+        piece = PAWN;
+        break;
+      case 'r':
+        piece = ROOK;
+        break;
+      case 'n':
+        piece = KNIGHT;
+        break;
+      case 'b':
+        piece = BISHOP;
+        break;
+      case 'q':
+        piece = QUEEN;
+        break;
+      case 'k':
+        piece = KING;
+        break;
+      default:
+        throw new IllegalArgumentException(errPieceRep);
     }
 
     return getByEnum(piece, color);
