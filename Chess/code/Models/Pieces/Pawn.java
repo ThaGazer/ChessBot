@@ -26,7 +26,7 @@ public class Pawn extends Piece {
   public Set<Tile> moveSet(Tile t) throws ChessBoardException {
     Set<Tile> moves = new HashSet<>();
 
-    if (getColor()) {
+    if (getColor()) { //white move-set
       if (isFirst()) {
         moves.add(new Tile(t.getRow() + 2, t.getCol()));
       }
@@ -46,7 +46,7 @@ public class Pawn extends Piece {
           moves.add(new Tile(t.getRow() + 1, t.getCol() - 1));
         }
       }
-    } else {
+    } else { //black move-set
       if (isFirst()) {
         moves.add(new Tile(t.getRow() - 2, t.getCol()));
       }
