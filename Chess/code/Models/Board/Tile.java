@@ -68,6 +68,10 @@ public class Tile {
     return pieceHolder;
   }
 
+  public void clearPiece() {
+    pieceHolder = null;
+  }
+
   @Override
   public int hashCode() {
     int prime = 31;
