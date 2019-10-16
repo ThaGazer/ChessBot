@@ -39,7 +39,7 @@ public enum Pieces {
     Pieces piece;
 
     switch (Character.toLowerCase(x)) {
-      case ' ':
+      case 'p':
         piece = PAWN;
         break;
       case 'r':
