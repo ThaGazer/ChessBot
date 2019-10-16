@@ -9,15 +9,15 @@ public class Tile {
   private int row, col;
   private Piece pieceHolder;
 
-  public Tile(int c, int r) throws ChessBoardException {
+  public Tile(int r, int c) throws ChessBoardException {
     this(r,c, null);
   }
 
   public Tile(String tile) throws ChessBoardException {
-    this(tile.charAt(0), tile.charAt(1));
+    this(Character.getNumericValue(tile.charAt(1)), COLUMNS.getByAlpha(tile.charAt(0)).getNumberRep()+1);
   }
 
-  public Tile(int c, int r, Piece piece) throws ChessBoardException {
+  public Tile(int r, int c, Piece piece) throws ChessBoardException {
     setRow(r);
     setCol(c);
     setPiece(piece);
@@ -157,6 +157,10 @@ public class Tile {
 
     public int getNumberRep() {
       return numberRep;
+    }
+
+    public String toString() {
+      return String.valueOf(getNumberRep() + 1);
     }
   }
 }
