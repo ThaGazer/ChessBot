@@ -45,4 +45,14 @@ class StandardBoardTest extends BaseBoardTest {
       });
     }
   }
+
+  @Test
+  void testMovePiece() throws ChessBoardException {
+    Piece pieceToMove = new Pawn();
+    Tile futureTile = new Tile(1, 3);
+    char pieceNonce = ' ';
+    boolean turn = true;
+
+    board.movePiece(pieceToMove,futureTile,pieceNonce,true);
+  }
 }

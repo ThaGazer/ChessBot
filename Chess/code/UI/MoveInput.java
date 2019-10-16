@@ -7,7 +7,7 @@ import Models.Pieces.Pieces;
 
 public class MoveInput {
 
-  private static final String errMoveUnrecognized = "move input unrecognized ";
+  private static final String errMoveUnrecognized = "move input unrecognized: ";
 
   private Piece piece;
   private char nonce;
@@ -48,15 +48,19 @@ public class MoveInput {
   }
 
   public static MoveInput parse(String in, boolean color) throws ChessBoardException {
-    switch(in.length()) {
-      case 2:
-        return new MoveInput(Pieces.getByEnum(Pieces.PAWN, color), new Tile(in));
-      case 3:
-        return new MoveInput(Pieces.getByChar(in.charAt(0), color), new Tile(in.substring(1)));
-      case 4:
-        return new MoveInput(Pieces.getByChar(in.charAt(0), color), new Tile(in.substring(2)));
-      default:
-        throw new ChessBoardException(errMoveUnrecognized + in);
+    if(in.isEmpty()) {
+      throw new ChessBoardException(errMoveUnrecognized + in);
+    }
+
+    String[] inSplit = in.toLowerCase().split("x");
+
+    switch(inSplit.length) {
+      case 1:
+        if(inSplit[0].length() > 2) {
+          throw new ChessBoardException(errMoveUnrecognized + in);
+        }
+
+
     }
   }
 }
