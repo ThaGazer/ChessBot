@@ -47,6 +47,7 @@ public class MoveInput {
     tile = tileMoveTo;
   }
 
+  //TODO should be a better way to do this
   public static MoveInput parse(String in, boolean color) throws ChessBoardException {
     if(in.isEmpty()) {
       throw new ChessBoardException(errMoveUnrecognized + in);
@@ -56,11 +57,29 @@ public class MoveInput {
 
     switch(inSplit.length) {
       case 1:
-        if(inSplit[0].length() > 2) {
-          throw new ChessBoardException(errMoveUnrecognized + in);
+        switch(inSplit[0].length()) {
+          case 3:
+            return new MoveInput(Pieces.getByChar(inSplit[0].charAt(0), color),
+                new Tile(inSplit[0].substring(1)));
+          case 4:
+            return new MoveInput(Pieces.getByChar(inSplit[0].charAt(0), color),
+                inSplit[0].charAt(1), new Tile(inSplit[0].substring(2)));
+          default:
+            throw new ChessBoardException(errMoveUnrecognized + in);
         }
-
-
+      case 2:
+        switch(inSplit[0].length()) {
+          case 1:
+            return new MoveInput(Pieces.getByChar(inSplit[0].charAt(0), color),
+                new Tile(inSplit[1]));
+          case 2:
+            return new MoveInput(Pieces.getByChar(inSplit[0].charAt(0), color),
+                inSplit[0].charAt(1), new Tile(inSplit[1]));
+          default:
+            throw new ChessBoardException(errMoveUnrecognized + in);
+        }
+      default:
+        throw new ChessBoardException(errMoveUnrecognized + in);
     }
   }
 }
