@@ -160,7 +160,26 @@ public class Tile {
     }
 
     public String toString() {
-      return String.valueOf(getNumberRep() + 1);
+      switch(this) {
+        case A:
+          return "a";
+        case B:
+          return "b";
+        case C:
+          return "c";
+        case D:
+          return "d";
+        case E:
+          return "e";
+        case F:
+          return "f";
+        case G:
+          return "g";
+        case H:
+          return "h";
+        default:
+          return "";
+      }
     }
   }
 }
