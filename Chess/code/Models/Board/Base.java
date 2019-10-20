@@ -55,7 +55,7 @@ public abstract class Base {
       throw new ChessBoardException(errTileFormat + errUnknownTile + tile);
     }
 
-    return board.get(Tile.getColumn(tile.charAt(0)).getNumberRep() +
+    return board.get(Tile.getColumn(tile.charAt(0)).getNumberRep()-1 +
         ((Character.getNumericValue(tile.charAt(1))-1) * BOARDLENGTH));
   }
   

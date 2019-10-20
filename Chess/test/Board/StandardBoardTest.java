@@ -54,5 +54,6 @@ class StandardBoardTest extends BaseBoardTest {
     boolean turn = true;
 
     board.movePiece(pieceToMove,futureTile,pieceNonce,true);
+    assertTrue(true);
   }
 }

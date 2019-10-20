@@ -41,8 +41,8 @@ class TileTest {
       for (int i = 0; i < Tile.COLUMNS.values().length; i++) {
         int finalI = i;
         assertAll(() -> {
-          assertEquals(Tile.getColumn(finalI +1), Tile.COLUMNS.values()[finalI]);
-          assertEquals(Tile.COLUMNS.values()[finalI].getNumberRep(), finalI);
+          assertEquals(Tile.getColumn(finalI + 1), Tile.COLUMNS.values()[finalI]);
+          assertEquals(Tile.COLUMNS.values()[finalI].getNumberRep(), finalI + 1);
         });
       }
 

@@ -14,7 +14,7 @@ public class Tile {
   }
 
   public Tile(String tile) throws ChessBoardException {
-    this(Character.getNumericValue(tile.charAt(1)), COLUMNS.getByAlpha(tile.charAt(0)).getNumberRep()+1);
+    this(Character.getNumericValue(tile.charAt(1)), COLUMNS.getByAlpha(tile.charAt(0)).getNumberRep());
   }
 
   public Tile(int r, int c, Piece piece) throws ChessBoardException {
@@ -156,7 +156,7 @@ public class Tile {
     }
 
     public int getNumberRep() {
-      return numberRep;
+      return numberRep+1;
     }
 
     public String toString() {
