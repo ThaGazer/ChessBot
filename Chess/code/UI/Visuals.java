@@ -25,12 +25,11 @@ public class Visuals {
       "    [tile]: column='a-h' row='1-8'\n" +
       "press 'q' to return to current game";
   private static final String msgNextCommand = ":> ";
-  private static final String msgPrevMove = "played: ";
+  private static final String msgPrevMove = " played: ";
   private static final String msgWhite = "White";
   private static final String msgBlack = "Black";
   private static final String gameBoard_edge =
       "  -------------------------------------------------";
-
 
   public Visuals(){
 
@@ -49,11 +48,11 @@ public class Visuals {
     return true;
   }
 
-  public static void printPreviousMove(Tile preMove) {
+  public static void printPreviousMove(Tile preMove, boolean currTurn) {
     if(preMove != null) {
       System.out.println(getTurnMsg(preMove.getPiece().getColor()) + msgPrevMove + preMove);
     }
-    System.out.print(msgWhite + msgNextCommand);
+    System.out.print(getTurnMsg(currTurn) + msgNextCommand);
   }
 
   public static void printBoard(Base board) throws ChessBoardException {

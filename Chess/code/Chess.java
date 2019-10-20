@@ -62,7 +62,7 @@ public class Chess implements Closeable {
       do {
         Visuals.printBoard(board);
 
-        Visuals.printPreviousMove(preMove);
+        Visuals.printPreviousMove(preMove, getTurn());
         //operates off of user input
         try {
           playOn = userOp(CommandInput.parse(scn.nextLine()));
