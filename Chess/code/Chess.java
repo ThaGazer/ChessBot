@@ -103,8 +103,7 @@ public class Chess implements Closeable {
   //TODO detect collision
   //TODO piece capture
   private boolean movePiece(MoveInput userMove) throws ChessBoardException {
-    preMove = userMove.getTile();
-    board.movePiece(userMove.getPiece(), userMove.getTile(),
+    preMove = board.movePiece(userMove.getPiece(), userMove.getTile(),
         userMove.getNonce(), getTurn());
     setTurn();
     return true;

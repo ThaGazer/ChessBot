@@ -41,7 +41,7 @@ public abstract class Base {
 
   abstract void fill_In_Pieces();
 
-  public abstract void movePiece(Piece pieceToMove, Tile futureTile, char pieceNonce, boolean turn)
+  public abstract Tile movePiece(Piece pieceToMove, Tile futureTile, char pieceNonce, boolean turn)
       throws ChessBoardException;
 
   public List<Tile> getBoard() {

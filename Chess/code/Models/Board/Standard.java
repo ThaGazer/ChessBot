@@ -25,17 +25,17 @@ public class Standard extends Base {
   }
 
   //TODO wip
-  public void movePiece(Piece pieceToMove, Tile futureTile, char pieceNonce, boolean turn)
+  public Tile movePiece(Piece pieceToMove, Tile futureTile, char pieceNonce, boolean turn)
       throws ChessBoardException {
-    if(combatCases(findPiecesTile(pieceToMove, futureTile, pieceNonce))) {
+    Tile futureBoardTile = getTile(futureTile);
 
+    Tile foundTile;
+    if(combatCases(foundTile = findPiecesTile(pieceToMove, futureBoardTile, pieceNonce))) {
+      swapPieces(foundTile, futureBoardTile);
     }
-  }
 
-  private boolean combatCases(Tile tile) {
-    return true;
+    return futureBoardTile;
   }
-
 
   private Tile findPiecesTile(Piece pieceToFind, Tile futureTile, char pieceNonce)
       throws ChessBoardException {
@@ -68,6 +68,10 @@ public class Standard extends Base {
   }
 
   private boolean matchNonce(Tile tile, char nonce) throws ChessBoardException {
+    if(nonce == ' ') {
+      return true;
+    }
+
     if(Character.isAlphabetic(nonce)) {
       return tile.getCol() == Tile.getColumn(nonce).getNumberRep();
     } else if (Character.isDigit(nonce)) {
@@ -75,5 +79,14 @@ public class Standard extends Base {
     } else {
       throw new ChessBoardException(errUnrecognizedNonce);
     }
+  }
+
+  private void swapPieces(Tile oldTile, Tile newTile) {
+    newTile.setPiece(oldTile.getPiece());
+    oldTile.clearPiece();
+  }
+
+  private boolean combatCases(Tile tile) {
+    return true;
   }
 }
