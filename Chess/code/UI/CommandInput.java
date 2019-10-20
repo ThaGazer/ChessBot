@@ -49,7 +49,7 @@ public class CommandInput {
         command = new CommandInput(QUIT);
         break;
       default:
-        command = new CommandInput(MOVE);
+        command = new CommandInput(MOVE, in);
     }
 
     return command;
