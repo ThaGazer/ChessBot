@@ -7,12 +7,11 @@ import java.util.List;
 
 public class Standard extends Base {
 
-  private int numWhitePieces;
-  private int numBlackPieces;
+  private static final String errUnrecognizedNonce = "unrecognized nonce";
+  private static final String errCouldntFindPiece = "could not find a matching piece: ";
 
   public Standard() throws ChessBoardException {
     super();
-    numWhitePieces = numBlackPieces = 16;
   }
 
   protected void fill_In_Pieces() {
@@ -25,20 +24,56 @@ public class Standard extends Base {
     }
   }
 
-  public int getNumWhitePieces() {
-    return numWhitePieces;
-  }
-
-  public int getNumBlackPieces() {
-    return numBlackPieces;
-  }
-
   //TODO wip
-  public boolean movePiece(Piece pieceToMove, Tile futureTile, char pieceNonce, boolean turn)
+  public void movePiece(Piece pieceToMove, Tile futureTile, char pieceNonce, boolean turn)
       throws ChessBoardException {
+    if(combatCases(findPiecesTile(pieceToMove, futureTile, pieceNonce))) {
 
+    }
+  }
+
+  private boolean combatCases(Tile tile) {
     return true;
   }
 
 
+  private Tile findPiecesTile(Piece pieceToFind, Tile futureTile, char pieceNonce)
+      throws ChessBoardException {
+    List<Tile> tiles = possiblePieces(pieceToFind, futureTile);
+
+    if(tiles.size() == 1) {
+      return tiles.get(0);
+    }
+
+    for(Tile t : tiles) {
+      if(matchNonce(t, pieceNonce)) {
+        return t;
+      }
+    }
+    throw new ChessBoardException(errCouldntFindPiece + pieceToFind + futureTile);
+  }
+
+  private List<Tile> possiblePieces(Piece pieceToMove, Tile futureTile)
+      throws ChessBoardException {
+    List<Tile> ret = new ArrayList<>();
+    for(Tile t : getBoard()) {
+      Piece tilePiece = t.getPiece();
+      if(tilePiece != null) {
+        if(pieceToMove.equals(tilePiece) && tilePiece.moveSet(t).contains(futureTile)) {
+          ret.add(t);
+        }
+      }
+    }
+    return ret;
+  }
+
+  private boolean matchNonce(Tile tile, char nonce) throws ChessBoardException {
+    if(Character.isAlphabetic(nonce)) {
+      return tile.getCol() == Tile.getColumn(nonce).getNumberRep();
+    } else if (Character.isDigit(nonce)) {
+      return tile.getRow() == nonce;
+    } else {
+      throw new ChessBoardException(errUnrecognizedNonce);
+    }
+  }
 }

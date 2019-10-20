@@ -7,21 +7,14 @@
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Scanner;
-
-import Models.Board.ChessBoardException;
-import Models.Board.Tile;
-import Models.Board.Base;
-import Models.Board.Standard;
+import Models.Board.*;
 import UI.CommandInput;
 import UI.MoveInput;
 import UI.Visuals;
 
-import static UI.CommandInput.COMMANDS;
-
 //TODO comment everything
 
 public class Chess implements Closeable {
-
 
   private static final String msgQuit = "quiting...";
 
@@ -111,10 +104,10 @@ public class Chess implements Closeable {
   //TODO piece capture
   private boolean movePiece(MoveInput userMove) throws ChessBoardException {
     preMove = userMove.getTile();
-    boolean ret = board.movePiece(userMove.getPiece(),
-        userMove.getTile(), userMove.getNonce(), getTurn());
+    board.movePiece(userMove.getPiece(), userMove.getTile(),
+        userMove.getNonce(), getTurn());
     setTurn();
-    return ret;
+    return true;
   }
 
   private boolean newGame() throws ChessBoardException {
