@@ -3,6 +3,7 @@ package Models.Board;
 import Models.Pieces.Piece;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class Base {
 
@@ -47,6 +48,15 @@ public abstract class Base {
     return List.copyOf(board);
   }
 
+  //TODO Tests for the gets
+  public Tile getTile(int tile) throws ChessBoardException {
+    if(tile < 0 || tile > BOARDSIZE) {
+      throw new ChessBoardException(errTileFormat + errTileOOB + tile);
+    }
+
+    return board.get(tile);
+  }
+
   public Tile getTile(String tile) throws ChessBoardException {
     if(tile == null) {
       throw new IllegalArgumentException(errTileFormat + errNull);
@@ -55,15 +65,12 @@ public abstract class Base {
       throw new ChessBoardException(errTileFormat + errUnknownTile + tile);
     }
 
-    return board.get(Tile.getColumn(tile.charAt(0)).getNumberRep()-1 +
+    return getTile(Tile.getColumn(tile.charAt(0)).getNumberRep()-1 +
         ((Character.getNumericValue(tile.charAt(1))-1) * BOARDLENGTH));
   }
-  
-  public Tile getTile(int tile) throws ChessBoardException {
-    if(tile < 0 || tile > BOARDSIZE) {
-      throw new ChessBoardException(errTileFormat + errTileOOB + tile);
-    }
-    return board.get(tile);
+
+  public Tile getTile(Tile tile) throws ChessBoardException {
+    return getTile(Objects.requireNonNull(tile.toString()));
   }
 
   //TODO maybe equals/hashcode
