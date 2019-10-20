@@ -50,11 +50,10 @@ public class Visuals {
   }
 
   public static void printPreviousMove(Tile preMove) {
-    if(preMove == null) {
-      System.out.println(msgWhite + msgNextCommand);
-    } else {
+    if(preMove != null) {
       System.out.println(getTurnMsg(preMove.getPiece().getColor()) + msgPrevMove + preMove);
     }
+    System.out.print(msgWhite + msgNextCommand);
   }
 
   public static void printBoard(Base board) throws ChessBoardException {
