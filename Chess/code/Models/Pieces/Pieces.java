@@ -5,15 +5,36 @@
  */
 package Models.Pieces;
 
+import Models.Board.ChessBoardException;
+
 public enum Pieces {
   PAWN(1), KNIGHT(2), BISHOP(3), ROOK(4), QUEEN(5), KING(6);
 
-  private static final String errPieceRep = "unrecognized piece rep";
+  private static final String errPieceRep = "unrecognized piece rep: ";
 
   int numRep;
 
   Pieces(int x) {
     numRep = x;
+  }
+
+  public static Pieces valueOfChar(char c) {
+    switch(Character.toLowerCase(c)) {
+      case 'p':
+        return PAWN;
+      case 'r':
+        return ROOK;
+      case 'b':
+        return BISHOP;
+      case 'n':
+        return KNIGHT;
+      case 'q':
+        return QUEEN;
+      case 'k':
+        return KING;
+      default:
+        throw new IllegalArgumentException(errPieceRep + c);
+    }
   }
 
   public static Piece getByEnum(Pieces x, boolean color) {
