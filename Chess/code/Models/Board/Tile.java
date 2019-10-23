@@ -9,21 +9,21 @@ public class Tile {
   private int row, col;
   private Piece pieceHolder;
 
-  public Tile(int r, int c) throws ChessBoardException {
+  public Tile(int r, int c) throws BoardException {
     this(r,c, null);
   }
 
-  public Tile(String tile) throws ChessBoardException {
+  public Tile(String tile) throws BoardException {
     this(Character.getNumericValue(tile.charAt(1)), COLUMNS.getByAlpha(tile.charAt(0)).getNumberRep());
   }
 
-  public Tile(int r, int c, Piece piece) throws ChessBoardException {
+  public Tile(int r, int c, Piece piece) throws BoardException {
     setRow(r);
     setCol(c);
     setPiece(piece);
   }
 
-  public Tile(Tile t) throws ChessBoardException {
+  public Tile(Tile t) throws BoardException {
     this(t.getRow(), t.getCol(), t.getPiece());
   }
 
@@ -35,19 +35,19 @@ public class Tile {
     return COLUMNS.getByNum(x);
   }
 
-  public void setRow(int r) throws ChessBoardException {
+  public void setRow(int r) throws BoardException {
     if (r >= 1 && r <= 8) {
       row = r;
     } else {
-      throw new ChessBoardException(errBoardBounds + r);
+      throw new BoardException(errBoardBounds + r);
     }
   }
 
-  public void setCol(int c) throws ChessBoardException {
+  public void setCol(int c) throws BoardException {
     if (c >= 1 && c <= 8) {
       col = c;
     } else {
-      throw new ChessBoardException(errBoardBounds + c);
+      throw new BoardException(errBoardBounds + c);
     }
   }
 
@@ -70,6 +70,10 @@ public class Tile {
 
   public void clearPiece() {
     pieceHolder = null;
+  }
+
+  public boolean holdsPiece() {
+    return getPiece() != null;
   }
 
   @Override

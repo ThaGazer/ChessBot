@@ -1,7 +1,7 @@
 package Board;
 
 import Models.Board.Base;
-import Models.Board.ChessBoardException;
+import Models.Board.BoardException;
 import Models.Board.Tile;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,12 +15,12 @@ abstract class BaseBoardTest {
 
   Base board;
 
-  BaseBoardTest() throws ChessBoardException {
+  BaseBoardTest() throws BoardException {
     createBoard();
   }
 
   @BeforeAll
-  abstract void createBoard() throws ChessBoardException;
+  abstract void createBoard() throws BoardException;
 
   @Test
   void testGetBoard() {
@@ -28,7 +28,7 @@ abstract class BaseBoardTest {
   }
 
   @Test
-  void testBoardFill() throws ChessBoardException {
+  void testBoardFill() throws BoardException {
     List<Tile> boardArr = board.getBoard();
 
     for(int i = 0, r = 0, c = 0; i < board.getBoard().size(); i++, c++) {
@@ -42,7 +42,7 @@ abstract class BaseBoardTest {
 
   @ParameterizedTest
   @ValueSource(strings = {"a1", "h8"})
-  void testGetTile(String tile) throws ChessBoardException {
+  void testGetTile(String tile) throws BoardException {
     assertEquals(board.getTile(tile), new Tile(tile));
   }
 }

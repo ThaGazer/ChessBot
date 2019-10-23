@@ -51,7 +51,7 @@ public class Chess implements Closeable {
 
     try {
       selectBoard();
-    } catch(ChessBoardException e) {
+    } catch(BoardException e) {
       e.printStackTrace();
     }
   }
@@ -66,7 +66,7 @@ public class Chess implements Closeable {
         //operates off of user input
         try {
           playOn = userOp(CommandInput.parse(scn.nextLine()));
-        } catch(ChessBoardException | IllegalArgumentException cbe) {
+        } catch(BoardException | IllegalArgumentException cbe) {
           playOn = true;
           System.err.println(errWarning + cbe.getMessage());
         } catch(Exception e) {
@@ -80,11 +80,11 @@ public class Chess implements Closeable {
   }
 
   //TODO take user input for board selection
-  private void selectBoard() throws ChessBoardException {
+  private void selectBoard() throws BoardException {
     board = new Standard();
   }
 
-  private boolean userOp(CommandInput command) throws ChessBoardException {
+  private boolean userOp(CommandInput command) throws BoardException {
     switch(command.getCommand()) {
       case HELP:
         return Visuals.printHelpMenu(scn);
@@ -96,20 +96,20 @@ public class Chess implements Closeable {
         System.out.println(msgQuit);
         return false;
       default:
-        throw new ChessBoardException(errUnexpectedErr);
+        throw new BoardException(errUnexpectedErr);
     }
   }
 
   //TODO detect collision
   //TODO piece capture
-  private boolean movePiece(MoveInput userMove) throws ChessBoardException {
+  private boolean movePiece(MoveInput userMove) throws BoardException {
     preMove = board.movePiece(userMove.getPiece(), userMove.getTile(),
         userMove.getNonce(), getTurn());
     setTurn();
     return true;
   }
 
-  private boolean newGame() throws ChessBoardException {
+  private boolean newGame() throws BoardException {
     board = new Standard();
     return true;
   }

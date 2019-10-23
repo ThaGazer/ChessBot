@@ -1,4 +1,4 @@
-import Models.Board.ChessBoardException;
+import Models.Board.BoardException;
 import Models.Board.Tile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ class TileTest {
   private int testVar;
 
   @BeforeEach
-  void setup() throws ChessBoardException {
+  void setup() throws BoardException {
     t = new Tile(1, 1);
   }
 

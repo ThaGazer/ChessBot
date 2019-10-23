@@ -16,12 +16,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class StandardBoardTest extends BaseBoardTest {
 
-  StandardBoardTest() throws ChessBoardException {
+  StandardBoardTest() throws BoardException {
     super();
   }
 
   @Override
-  void createBoard() throws ChessBoardException {
+  void createBoard() throws BoardException {
     board = new Standard();
   }
 
@@ -47,7 +47,7 @@ class StandardBoardTest extends BaseBoardTest {
   }
 
   @Test
-  void testMovePiece() throws ChessBoardException {
+  void testMovePiece() throws BoardException {
     Piece pieceToMove = new Pawn();
     Tile futureTile = new Tile(3, 1);
     char pieceNonce = ' ';

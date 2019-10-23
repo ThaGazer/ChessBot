@@ -1,7 +1,7 @@
 package UI;
 
 import Models.Board.Base;
-import Models.Board.ChessBoardException;
+import Models.Board.BoardException;
 import Models.Board.Tile;
 import Models.Pieces.Piece;
 import java.util.Scanner;
@@ -55,7 +55,7 @@ public class Visuals {
     System.out.print(getTurnMsg(currTurn) + msgNextCommand);
   }
 
-  public static void printBoard(Base board) throws ChessBoardException {
+  public static void printBoard(Base board) throws BoardException {
     System.out.println(gameBoard_edge);
     for (int i = BOARDLENGTH*BOARDLENGTH - 8; i >= 0; i -= 8) {
       System.out.print((i / BOARDLENGTH) + 1 + " ");

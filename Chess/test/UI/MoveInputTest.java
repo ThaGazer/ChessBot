@@ -1,6 +1,6 @@
 package UI;
 
-import Models.Board.ChessBoardException;
+import Models.Board.BoardException;
 import Models.Board.Tile;
 import Models.Pieces.*;
 import org.junit.jupiter.params.*;
@@ -14,7 +14,7 @@ class MoveInputTest {
 
   @ParameterizedTest
   @MethodSource("userTestInput")
-  void testParse(String move, Piece testPiece, char testNonce, Tile testTile, boolean testColor) throws ChessBoardException {
+  void testParse(String move, Piece testPiece, char testNonce, Tile testTile, boolean testColor) throws BoardException {
     MoveInput testInput = MoveInput.parse(move, testColor);
 
     assertAll(() -> {
@@ -25,7 +25,7 @@ class MoveInputTest {
     });
   }
 
-  static Stream<Arguments> userTestInput() throws ChessBoardException {
+  static Stream<Arguments> userTestInput() throws BoardException {
     return Stream.of(
         arguments("pa3", new Pawn(true), ' ', new Tile("a3"), true),
         arguments("Bh8", new Bishop(false), ' ', new Tile("h8"), false),

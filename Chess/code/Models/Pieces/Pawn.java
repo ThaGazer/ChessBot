@@ -1,6 +1,6 @@
 package Models.Pieces;
 
-import Models.Board.ChessBoardException;
+import Models.Board.BoardException;
 import Models.Board.Tile;
 
 import java.util.HashSet;
@@ -23,7 +23,7 @@ public class Pawn extends Piece {
   }
 
   @Override
-  public Set<Tile> moveSet(Tile t) throws ChessBoardException {
+  public Set<Tile> moveSet(Tile t) throws BoardException {
     Set<Tile> moves = new HashSet<>();
 
     if (getColor()) { //white move-set
