@@ -1,8 +1,7 @@
 package game.Models.Pieces;
 
-import game.ChessException;
+import game.Models.Board.BoardException;
 import game.Models.Board.Tile;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,7 +10,7 @@ public abstract class Piece {
 
   private static final int MAXNUMMOVES = 8;
 
-  private boolean WB;          /*true: white false: black*/
+  private boolean WB; /*true: white false: black*/
   private boolean firstMove = true;
   private char shorthand;
 
@@ -102,39 +101,47 @@ public abstract class Piece {
    * @return Set of possible move locations
    */
   //TODO comment moveSets for each piece
-  public abstract Set<Tile> moveSet(Tile t) throws ChessException;
+  public abstract Set<Tile> moveSet(Tile t) throws PieceException;
 
-  Set<Tile> straightMoves(Tile t) throws ChessException {
+  Set<Tile> straightMoves(Tile t) throws PieceException {
     Set<Tile> moves = new HashSet<>();
 
-    for (int i = 1; i < MAXNUMMOVES; i++) {
-      if (i != t.getRow()) {
-        moves.add(new Tile(i, t.getCol()));
-      }
+    try {
+      for(int i = 1; i < MAXNUMMOVES; i++) {
+        if(i != t.getRow()) {
+          moves.add(new Tile(i, t.getCol()));
+        }
 
-      if (i != t.getCol()) {
-        moves.add(new Tile(t.getRow(), i));
+        if(i != t.getCol()) {
+          moves.add(new Tile(t.getRow(), i));
+        }
       }
+    } catch(BoardException e) {
+      throw new PieceException(e.getMessage() + e);
     }
 
     return moves;
   }
 
 
-  Set<Tile> diagonalMoves(Tile t) throws ChessException {
+  Set<Tile> diagonalMoves(Tile t) throws PieceException {
     Set<Tile> moves = new HashSet<>();
 
-    for (int i = 1; i <= MAXNUMMOVES - t.getRow() && i <= MAXNUMMOVES - t.getCol(); i++) {
-      moves.add(new Tile((t.getRow() + i), (t.getCol() + i)));
-    }
-    for (int i = 0; i <= MAXNUMMOVES - t.getRow() && i <= t.getCol(); i++) {
-      moves.add(new Tile((t.getRow() + i), (t.getCol() - i)));
-    }
-    for (int i = 0; i <= t.getRow() && i <= MAXNUMMOVES - t.getCol(); i++) {
-      moves.add(new Tile((t.getRow() - i), (t.getCol() + i)));
-    }
-    for (int i = 0; i <= t.getRow() && i <= t.getCol(); i++) {
-      moves.add(new Tile((t.getRow() - i), (t.getCol() - i)));
+    try {
+      for(int i = 1; i <= MAXNUMMOVES - t.getRow() && i <= MAXNUMMOVES - t.getCol(); i++) {
+        moves.add(new Tile((t.getRow() + i), (t.getCol() + i)));
+      }
+      for(int i = 0; i <= MAXNUMMOVES - t.getRow() && i <= t.getCol(); i++) {
+        moves.add(new Tile((t.getRow() + i), (t.getCol() - i)));
+      }
+      for(int i = 0; i <= t.getRow() && i <= MAXNUMMOVES - t.getCol(); i++) {
+        moves.add(new Tile((t.getRow() - i), (t.getCol() + i)));
+      }
+      for(int i = 0; i <= t.getRow() && i <= t.getCol(); i++) {
+        moves.add(new Tile((t.getRow() - i), (t.getCol() - i)));
+      }
+    } catch(BoardException e) {
+      throw new PieceException(e.getMessage(), e);
     }
 
     return moves;

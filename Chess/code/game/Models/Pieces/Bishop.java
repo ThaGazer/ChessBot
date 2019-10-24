@@ -1,6 +1,5 @@
 package game.Models.Pieces;
 
-import game.ChessException;
 import game.Models.Board.Tile;
 
 import java.util.Set;
@@ -22,7 +21,7 @@ public class Bishop extends Piece {
   }
 
   @Override
-  public Set<Tile> moveSet(Tile t) throws ChessException {
+  public Set<Tile> moveSet(Tile t) throws PieceException {
     return diagonalMoves(t);
   }
 }
