@@ -1,6 +1,5 @@
 package game.Models.Board;
 
-import game.ChessException;
 import game.Models.Pieces.Piece;
 
 public class Tile {
@@ -10,21 +9,21 @@ public class Tile {
   private int row, col;
   private Piece pieceHolder;
 
-  public Tile(int r, int c) throws ChessException {
+  public Tile(int r, int c) throws BoardException {
     this(r,c, null);
   }
 
-  public Tile(String tile) throws ChessException {
+  public Tile(String tile) throws BoardException {
     this(Character.getNumericValue(tile.charAt(1)), COLUMNS.getByAlpha(tile.charAt(0)).getNumberRep());
   }
 
-  public Tile(int r, int c, Piece piece) throws ChessException {
+  public Tile(int r, int c, Piece piece) throws BoardException {
     setRow(r);
     setCol(c);
     setPiece(piece);
   }
 
-  public Tile(Tile t) throws ChessException {
+  public Tile(Tile t) throws BoardException {
     this(t.getRow(), t.getCol(), t.getPiece());
   }
 
@@ -36,19 +35,19 @@ public class Tile {
     return COLUMNS.getByNum(x);
   }
 
-  public void setRow(int r) throws ChessException {
+  public void setRow(int r) throws BoardException {
     if (r >= 1 && r <= 8) {
       row = r;
     } else {
-      throw new ChessException(errBoardBounds + r);
+      throw new BoardException(errBoardBounds + r);
     }
   }
 
-  public void setCol(int c) throws ChessException {
+  public void setCol(int c) throws BoardException {
     if (c >= 1 && c <= 8) {
       col = c;
     } else {
-      throw new ChessException(errBoardBounds + c);
+      throw new BoardException(errBoardBounds + c);
     }
   }
 
