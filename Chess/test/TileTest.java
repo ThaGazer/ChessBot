@@ -1,4 +1,5 @@
 import game.ChessException;
+import game.Models.Board.BoardException;
 import game.Models.Board.Tile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,8 +60,8 @@ class TileTest {
       for (int i = Integer.MIN_VALUE / 512; i < 0; i++) {
         int finalI = i;
         assertAll(() -> {
-          assertThrows(IllegalArgumentException.class, () -> t.setRow(finalI));
-          assertThrows(IllegalArgumentException.class, () -> t.setCol(finalI));
+          assertThrows(BoardException.class, () -> t.setRow(finalI));
+          assertThrows(BoardException.class, () -> t.setCol(finalI));
         });
       }
     });
