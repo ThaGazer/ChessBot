@@ -1,7 +1,7 @@
-package Models.Pieces;
+package game.Models.Pieces;
 
-import Models.Board.BoardException;
-import Models.Board.Tile;
+import game.ChessException;
+import game.Models.Board.Tile;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -102,9 +102,9 @@ public abstract class Piece {
    * @return Set of possible move locations
    */
   //TODO comment moveSets for each piece
-  public abstract Set<Tile> moveSet(Tile t) throws BoardException;
+  public abstract Set<Tile> moveSet(Tile t) throws ChessException;
 
-  Set<Tile> straightMoves(Tile t) throws BoardException {
+  Set<Tile> straightMoves(Tile t) throws ChessException {
     Set<Tile> moves = new HashSet<>();
 
     for (int i = 1; i < MAXNUMMOVES; i++) {
@@ -121,7 +121,7 @@ public abstract class Piece {
   }
 
 
-  Set<Tile> diagonalMoves(Tile t) throws BoardException {
+  Set<Tile> diagonalMoves(Tile t) throws ChessException {
     Set<Tile> moves = new HashSet<>();
 
     for (int i = 1; i <= MAXNUMMOVES - t.getRow() && i <= MAXNUMMOVES - t.getCol(); i++) {

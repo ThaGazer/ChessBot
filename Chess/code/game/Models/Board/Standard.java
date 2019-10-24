@@ -1,6 +1,7 @@
-package Models.Board;
+package game.Models.Board;
 
-import Models.Pieces.*;
+import game.ChessException;
+import game.Models.Pieces.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ public class Standard extends Base {
   private static final String errUnrecognizedNonce = "unrecognized nonce";
   private static final String errCouldntFindPiece = "could not find a matching piece: ";
 
-  public Standard() throws BoardException {
+  public Standard() throws ChessException {
     super();
   }
 
@@ -26,7 +27,7 @@ public class Standard extends Base {
 
   //TODO wip
   public Tile movePiece(Piece pieceToMove, Tile futureTile, char pieceNonce, boolean turn)
-      throws BoardException {
+      throws ChessException {
     Tile futureBoardTile = getTile(futureTile);
     Tile foundTile = findPiecesTile(pieceToMove, futureBoardTile, pieceNonce);
 
@@ -36,7 +37,7 @@ public class Standard extends Base {
   }
 
   private Tile findPiecesTile(Piece pieceToFind, Tile futureTile, char pieceNonce)
-      throws BoardException {
+      throws ChessException {
     List<Tile> tiles = possiblePieces(pieceToFind, futureTile);
 
     if(tiles.size() == 1) {
@@ -48,11 +49,11 @@ public class Standard extends Base {
         return t;
       }
     }
-    throw new BoardException(errCouldntFindPiece + pieceToFind + futureTile);
+    throw new ChessException(errCouldntFindPiece + pieceToFind + futureTile);
   }
 
   private List<Tile> possiblePieces(Piece pieceToMove, Tile futureTile)
-      throws BoardException {
+      throws ChessException {
     List<Tile> ret = new ArrayList<>();
     for(Tile t : getBoard()) {
       Piece tilePiece = t.getPiece();
@@ -65,7 +66,7 @@ public class Standard extends Base {
     return ret;
   }
 
-  private boolean matchNonce(Tile tile, char nonce) throws BoardException {
+  private boolean matchNonce(Tile tile, char nonce) throws ChessException {
     if(nonce == ' ') {
       return true;
     }
@@ -75,18 +76,19 @@ public class Standard extends Base {
     } else if (Character.isDigit(nonce)) {
       return tile.getRow() == nonce;
     } else {
-      throw new BoardException(errUnrecognizedNonce);
+      throw new ChessException(errUnrecognizedNonce);
     }
   }
 
   //TODO move to Base class
-  private void swapPieces(Tile oldTile, Tile newTile) {
+  private void swapPieces(Tile oldTile, Tile newTile) throws ChessException {
     if(chessRules(oldTile, newTile))
     newTile.setPiece(oldTile.getPiece());
     oldTile.clearPiece();
   }
 
-  private boolean chessRules(Tile oldTile, Tile newTile) {
+  //TODO wip
+  private boolean chessRules(Tile oldTile, Tile newTile) throws ChessException {
     boolean ret;
     if(ret = pieceRuleSet(oldTile, newTile)) {
       switch(Pieces.valueOfChar(oldTile.getPiece().getShorthand())) {
@@ -101,7 +103,7 @@ public class Standard extends Base {
     return ret;
   }
 
-  private boolean pieceRuleSet(Tile old, Tile newt) throws BoardException {
+  private boolean pieceRuleSet(Tile old, Tile newt) throws ChessException {
     if(old.getCol() == newt.getCol()) {
       for(int i = old.getCol(); i < newt.getCol()-1; i++) {
         if(getTile(new Tile(old.getRow(), i)).holdsPiece()) {
@@ -109,6 +111,7 @@ public class Standard extends Base {
         }
       }
     }
+    return true;
   }
 
   private boolean pawnRuleSet(Tile old, Tile newt) {

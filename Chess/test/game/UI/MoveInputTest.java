@@ -1,8 +1,8 @@
-package UI;
+package game.UI;
 
-import Models.Board.BoardException;
-import Models.Board.Tile;
-import Models.Pieces.*;
+import game.ChessException;
+import game.Models.Board.Tile;
+import game.Models.Pieces.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 import java.util.stream.Stream;
@@ -14,7 +14,7 @@ class MoveInputTest {
 
   @ParameterizedTest
   @MethodSource("userTestInput")
-  void testParse(String move, Piece testPiece, char testNonce, Tile testTile, boolean testColor) throws BoardException {
+  void testParse(String move, Piece testPiece, char testNonce, Tile testTile, boolean testColor) throws ChessException {
     MoveInput testInput = MoveInput.parse(move, testColor);
 
     assertAll(() -> {
@@ -25,7 +25,7 @@ class MoveInputTest {
     });
   }
 
-  static Stream<Arguments> userTestInput() throws BoardException {
+  static Stream<Arguments> userTestInput() throws ChessException {
     return Stream.of(
         arguments("pa3", new Pawn(true), ' ', new Tile("a3"), true),
         arguments("Bh8", new Bishop(false), ' ', new Tile("h8"), false),

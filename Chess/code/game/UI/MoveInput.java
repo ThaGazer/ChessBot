@@ -1,9 +1,9 @@
-package UI;
+package game.UI;
 
-import Models.Board.BoardException;
-import Models.Board.Tile;
-import Models.Pieces.Piece;
-import Models.Pieces.Pieces;
+import game.ChessException;
+import game.Models.Board.Tile;
+import game.Models.Pieces.Piece;
+import game.Models.Pieces.Pieces;
 
 public class MoveInput {
 
@@ -48,9 +48,9 @@ public class MoveInput {
   }
 
   //TODO should be a better way to do this
-  public static MoveInput parse(String in, boolean color) throws BoardException {
+  public static MoveInput parse(String in, boolean color) throws ChessException {
     if(in.isEmpty()) {
-      throw new BoardException(errMoveUnrecognized + in);
+      throw new ChessException(errMoveUnrecognized + in);
     }
 
     String[] inSplit = in.toLowerCase().split("x");
@@ -65,7 +65,7 @@ public class MoveInput {
             return new MoveInput(Pieces.getByChar(inSplit[0].charAt(0), color),
                 inSplit[0].charAt(1), new Tile(inSplit[0].substring(2)));
           default:
-            throw new BoardException(errMoveUnrecognized + in);
+            throw new ChessException(errMoveUnrecognized + in);
         }
       case 2:
         switch(inSplit[0].length()) {
@@ -76,10 +76,10 @@ public class MoveInput {
             return new MoveInput(Pieces.getByChar(inSplit[0].charAt(0), color),
                 inSplit[0].charAt(1), new Tile(inSplit[1]));
           default:
-            throw new BoardException(errMoveUnrecognized + in);
+            throw new ChessException(errMoveUnrecognized + in);
         }
       default:
-        throw new BoardException(errMoveUnrecognized + in);
+        throw new ChessException(errMoveUnrecognized + in);
     }
   }
 }

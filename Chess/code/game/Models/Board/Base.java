@@ -1,6 +1,7 @@
-package Models.Board;
+package game.Models.Board;
 
-import Models.Pieces.Piece;
+import game.ChessException;
+import game.Models.Pieces.Piece;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -20,13 +21,13 @@ public abstract class Base {
 
   protected List<Tile> board;
 
-  Base() throws BoardException {
+  Base() throws ChessException {
     board = new ArrayList<>(BOARDSIZE);
     fill_A_Board();
     fill_In_Pieces();
   }
 
-  private void fill_A_Board() throws BoardException {
+  private void fill_A_Board() throws ChessException {
     int row = 0;
     int col = 0;
     for (int i = 0; i < BOARDSIZE; i++) {
@@ -42,34 +43,34 @@ public abstract class Base {
   abstract void fill_In_Pieces();
 
   public abstract Tile movePiece(Piece pieceToMove, Tile futureTile, char pieceNonce, boolean turn)
-      throws BoardException;
+      throws ChessException;
 
   public List<Tile> getBoard() {
     return List.copyOf(board);
   }
 
   //TODO Tests for the gets
-  public Tile getTile(int tile) throws BoardException {
+  public Tile getTile(int tile) throws ChessException {
     if(tile < 0 || tile > BOARDSIZE) {
-      throw new BoardException(errTileFormat + errTileOOB + tile);
+      throw new ChessException(errTileFormat + errTileOOB + tile);
     }
 
     return board.get(tile);
   }
 
-  public Tile getTile(String tile) throws BoardException {
+  public Tile getTile(String tile) throws ChessException {
     if(tile == null) {
       throw new IllegalArgumentException(errTileFormat + errNull);
     }
     if(tile.length() != 2) {
-      throw new BoardException(errTileFormat + errUnknownTile + tile);
+      throw new ChessException(errTileFormat + errUnknownTile + tile);
     }
 
     return getTile(Tile.getColumn(tile.charAt(0)).getNumberRep()-1 +
         ((Character.getNumericValue(tile.charAt(1))-1) * BOARDLENGTH));
   }
 
-  public Tile getTile(Tile tile) throws BoardException {
+  public Tile getTile(Tile tile) throws ChessException {
     return getTile(Objects.requireNonNull(tile.toString()));
   }
 

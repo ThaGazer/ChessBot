@@ -1,6 +1,6 @@
-package UI;
+package game.UI;
 
-import static UI.CommandInput.COMMANDS.*;
+import static game.UI.CommandInput.COMMANDS.*;
 
 public class CommandInput {
 

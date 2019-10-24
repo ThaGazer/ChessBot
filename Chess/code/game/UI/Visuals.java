@@ -1,13 +1,13 @@
-package UI;
+package game.UI;
 
-import Models.Board.Base;
-import Models.Board.BoardException;
-import Models.Board.Tile;
-import Models.Pieces.Piece;
+import game.ChessException;
+import game.Models.Board.Base;
+import game.Models.Board.Tile;
+import game.Models.Pieces.Piece;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
-import static Models.Board.Base.BOARDLENGTH;
+import static game.Models.Board.Base.BOARDLENGTH;
 
 public class Visuals {
 
@@ -36,7 +36,7 @@ public class Visuals {
   }
 
   public static void printTitleScreen() throws InterruptedException {
-    System.out.println("HI Y'ALL!\nWelcome to Chess");
+    System.out.println("HI Y'ALL!\nWelcome to game.Chess");
     TimeUnit.SECONDS.sleep(5);
   }
 
@@ -55,7 +55,7 @@ public class Visuals {
     System.out.print(getTurnMsg(currTurn) + msgNextCommand);
   }
 
-  public static void printBoard(Base board) throws BoardException {
+  public static void printBoard(Base board) throws ChessException {
     System.out.println(gameBoard_edge);
     for (int i = BOARDLENGTH*BOARDLENGTH - 8; i >= 0; i -= 8) {
       System.out.print((i / BOARDLENGTH) + 1 + " ");

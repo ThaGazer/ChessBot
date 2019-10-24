@@ -5,10 +5,11 @@
  */
 package Board;
 
-import Models.Board.*;
-import Models.Pieces.Pawn;
-import Models.Pieces.Piece;
-import Models.Pieces.Pieces;
+import game.ChessException;
+import game.Models.Board.*;
+import game.Models.Pieces.Pawn;
+import game.Models.Pieces.Piece;
+import game.Models.Pieces.Pieces;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 
@@ -16,12 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class StandardBoardTest extends BaseBoardTest {
 
-  StandardBoardTest() throws BoardException {
+  StandardBoardTest() throws ChessException {
     super();
   }
 
   @Override
-  void createBoard() throws BoardException {
+  void createBoard() throws ChessException {
     board = new Standard();
   }
 
@@ -47,7 +48,7 @@ class StandardBoardTest extends BaseBoardTest {
   }
 
   @Test
-  void testMovePiece() throws BoardException {
+  void testMovePiece() throws ChessException {
     Piece pieceToMove = new Pawn();
     Tile futureTile = new Tile(3, 1);
     char pieceNonce = ' ';

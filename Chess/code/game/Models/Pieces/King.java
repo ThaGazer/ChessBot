@@ -1,7 +1,7 @@
-package Models.Pieces;
+package game.Models.Pieces;
 
-import Models.Board.BoardException;
-import Models.Board.Tile;
+import game.ChessException;
+import game.Models.Board.Tile;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,7 +23,7 @@ public class King extends Piece {
   }
 
   @Override
-  public Set<Tile> moveSet(Tile t) throws BoardException {
+  public Set<Tile> moveSet(Tile t) throws ChessException {
     Set<Tile> moves = new HashSet<>();
 
     moves.add(new Tile((t.getRow() + 1), t.getCol()));

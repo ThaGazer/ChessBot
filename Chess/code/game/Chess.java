@@ -1,4 +1,4 @@
-/*
+package game;/*
  * Author: ThaGazer
  * File:asd
  * Date: 12/1/2018
@@ -7,10 +7,10 @@
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Scanner;
-import Models.Board.*;
-import UI.CommandInput;
-import UI.MoveInput;
-import UI.Visuals;
+import game.Models.Board.*;
+import game.UI.CommandInput;
+import game.UI.MoveInput;
+import game.UI.Visuals;
 
 //TODO comment everything
 
@@ -51,7 +51,7 @@ public class Chess implements Closeable {
 
     try {
       selectBoard();
-    } catch(BoardException e) {
+    } catch(ChessException e) {
       e.printStackTrace();
     }
   }
@@ -66,7 +66,7 @@ public class Chess implements Closeable {
         //operates off of user input
         try {
           playOn = userOp(CommandInput.parse(scn.nextLine()));
-        } catch(BoardException | IllegalArgumentException cbe) {
+        } catch(ChessException | IllegalArgumentException cbe) {
           playOn = true;
           System.err.println(errWarning + cbe.getMessage());
         } catch(Exception e) {
@@ -80,11 +80,11 @@ public class Chess implements Closeable {
   }
 
   //TODO take user input for board selection
-  private void selectBoard() throws BoardException {
+  private void selectBoard() throws ChessException {
     board = new Standard();
   }
 
-  private boolean userOp(CommandInput command) throws BoardException {
+  private boolean userOp(CommandInput command) throws ChessException {
     switch(command.getCommand()) {
       case HELP:
         return Visuals.printHelpMenu(scn);
@@ -96,20 +96,20 @@ public class Chess implements Closeable {
         System.out.println(msgQuit);
         return false;
       default:
-        throw new BoardException(errUnexpectedErr);
+        throw new ChessException(errUnexpectedErr);
     }
   }
 
   //TODO detect collision
   //TODO piece capture
-  private boolean movePiece(MoveInput userMove) throws BoardException {
+  private boolean movePiece(MoveInput userMove) throws ChessException {
     preMove = board.movePiece(userMove.getPiece(), userMove.getTile(),
         userMove.getNonce(), getTurn());
     setTurn();
     return true;
   }
 
-  private boolean newGame() throws BoardException {
+  private boolean newGame() throws ChessException {
     board = new Standard();
     return true;
   }
