@@ -1,6 +1,6 @@
 package game.UI;
 
-import game.ChessException;
+import game.Models.Board.BoardException;
 import game.Models.Board.Tile;
 import game.Models.Pieces.Piece;
 import game.Models.Pieces.Pieces;
@@ -48,38 +48,42 @@ public class MoveInput {
   }
 
   //TODO should be a better way to do this
-  public static MoveInput parse(String in, boolean color) throws ChessException {
+  public static MoveInput parse(String in, boolean color) throws UIException {
     if(in.isEmpty()) {
-      throw new ChessException(errMoveUnrecognized + in);
+      throw new UIException(errMoveUnrecognized + in);
     }
 
     String[] inSplit = in.toLowerCase().split("x");
 
-    switch(inSplit.length) {
-      case 1:
-        switch(inSplit[0].length()) {
-          case 3:
-            return new MoveInput(Pieces.getByChar(inSplit[0].charAt(0), color),
-                new Tile(inSplit[0].substring(1)));
-          case 4:
-            return new MoveInput(Pieces.getByChar(inSplit[0].charAt(0), color),
-                inSplit[0].charAt(1), new Tile(inSplit[0].substring(2)));
-          default:
-            throw new ChessException(errMoveUnrecognized + in);
-        }
-      case 2:
-        switch(inSplit[0].length()) {
-          case 1:
-            return new MoveInput(Pieces.getByChar(inSplit[0].charAt(0), color),
-                new Tile(inSplit[1]));
-          case 2:
-            return new MoveInput(Pieces.getByChar(inSplit[0].charAt(0), color),
-                inSplit[0].charAt(1), new Tile(inSplit[1]));
-          default:
-            throw new ChessException(errMoveUnrecognized + in);
-        }
-      default:
-        throw new ChessException(errMoveUnrecognized + in);
+    try {
+      switch(inSplit.length) {
+        case 1:
+          switch(inSplit[0].length()) {
+            case 3:
+              return new MoveInput(Pieces.getByChar(inSplit[0].charAt(0), color),
+                  new Tile(inSplit[0].substring(1)));
+            case 4:
+              return new MoveInput(Pieces.getByChar(inSplit[0].charAt(0), color),
+                  inSplit[0].charAt(1), new Tile(inSplit[0].substring(2)));
+            default:
+              throw new UIException(errMoveUnrecognized + in);
+          }
+        case 2:
+          switch(inSplit[0].length()) {
+            case 1:
+              return new MoveInput(Pieces.getByChar(inSplit[0].charAt(0), color),
+                  new Tile(inSplit[1]));
+            case 2:
+              return new MoveInput(Pieces.getByChar(inSplit[0].charAt(0), color),
+                  inSplit[0].charAt(1), new Tile(inSplit[1]));
+            default:
+              throw new UIException(errMoveUnrecognized + in);
+          }
+        default:
+          throw new UIException(errMoveUnrecognized + in);
+      }
+    } catch(BoardException e) {
+      throw new UIException(e.getMessage(), e);
     }
   }
 }

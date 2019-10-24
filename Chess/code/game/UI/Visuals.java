@@ -1,7 +1,7 @@
 package game.UI;
 
-import game.ChessException;
 import game.Models.Board.Base;
+import game.Models.Board.BoardException;
 import game.Models.Board.Tile;
 import game.Models.Pieces.Piece;
 import java.util.Scanner;
@@ -55,16 +55,20 @@ public class Visuals {
     System.out.print(getTurnMsg(currTurn) + msgNextCommand);
   }
 
-  public static void printBoard(Base board) throws ChessException {
+  public static void printBoard(Base board) throws UIException {
     System.out.println(gameBoard_edge);
     for (int i = BOARDLENGTH*BOARDLENGTH - 8; i >= 0; i -= 8) {
       System.out.print((i / BOARDLENGTH) + 1 + " ");
       for (int j = 0; j < 8; j++) {
         Piece piece;
-        if((piece = board.getTile(i+j).getPiece()) == null) {
-          System.out.print("| " + " -  ");
-        } else {
-          System.out.print("| " + piece.toString() + " ");
+        try {
+          if((piece = board.getTile(i + j).getPiece()) == null) {
+            System.out.print("| " + " -  ");
+          } else {
+            System.out.print("| " + piece.toString() + " ");
+          }
+        } catch(BoardException e) {
+          throw new UIException(e.getMessage(), e);
         }
       }
       System.out.println("|");
