@@ -68,6 +68,10 @@ public class Tile {
     return pieceHolder;
   }
 
+  public boolean hasPiece() {
+    return getPiece() != null;
+  }
+
   public void clearPiece() {
     pieceHolder = null;
   }
