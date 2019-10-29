@@ -36,7 +36,7 @@ public class Visuals {
   }
 
   public static void printTitleScreen() throws InterruptedException {
-    System.out.println("HI Y'ALL!\nWelcome to game.Chess");
+    System.out.println("HI Y'ALL!\nWelcome to Chess");
     TimeUnit.SECONDS.sleep(5);
   }
 
