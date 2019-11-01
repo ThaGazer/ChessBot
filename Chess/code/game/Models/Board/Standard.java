@@ -1,13 +1,16 @@
 package game.Models.Board;
 
 import game.Models.Pieces.*;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Standard extends Base {
 
   private static final String errUnrecognizedNonce = "unrecognized nonce";
-  private static final String errCouldntFindPiece = "could not find a matching piece: ";
+  private static final String errInvalidMove = "Invalid piece movement: ";
+  private static final String errChessRules = "Move not allowed by the rules of chess";
 
   public Standard() throws BoardException {
     super();
@@ -16,7 +19,7 @@ public class Standard extends Base {
   protected void fill_In_Pieces() {
     for(int i = 0; i < BOARDLENGTH; i++) {
       board.get(((BOARDLENGTH * 7)) + i).setPiece(Pieces.getByEnum(Pieces.piecePlacementOrder()[i], BLACK));
-      board.get((BOARDLENGTH * 6) + i) .setPiece(new Pawn(BLACK));
+      board.get((BOARDLENGTH * 6) + i).setPiece(new Pawn(BLACK));
 
       board.get(BOARDLENGTH + i).setPiece(new Pawn(WHITE));
       board.get(i).setPiece(Pieces.getByEnum(Pieces.piecePlacementOrder()[i], WHITE));
@@ -29,9 +32,7 @@ public class Standard extends Base {
     Tile futureBoardTile = getTile(futureTile);
     Tile foundTile = findPiecesTile(pieceToMove, futureBoardTile, pieceNonce);
 
-    swapPieces(foundTile, futureBoardTile);
-
-    return futureBoardTile;
+    return swapPieces(foundTile, futureBoardTile);
   }
 
   private Tile findPiecesTile(Piece pieceToFind, Tile futureTile, char pieceNonce)
@@ -47,7 +48,7 @@ public class Standard extends Base {
         return t;
       }
     }
-    throw new BoardException(errCouldntFindPiece + pieceToFind + futureTile);
+    throw new BoardException(errInvalidMove + pieceToFind.getShorthand() + futureTile);
   }
 
   private List<Tile> possiblePieces(Piece pieceToMove, Tile futureTile)
@@ -75,7 +76,7 @@ public class Standard extends Base {
 
     if(Character.isAlphabetic(nonce)) {
       return tile.getCol() == Tile.getColumn(nonce).getNumberRep();
-    } else if (Character.isDigit(nonce)) {
+    } else if(Character.isDigit(nonce)) {
       return tile.getRow() == nonce;
     } else {
       throw new BoardException(errUnrecognizedNonce);
@@ -83,14 +84,22 @@ public class Standard extends Base {
   }
 
   //TODO move to Base class
-  private void swapPieces(Tile oldTile, Tile newTile) throws BoardException {
-    if(chessRules(oldTile, newTile))
-    newTile.setPiece(oldTile.getPiece());
-    oldTile.clearPiece();
+  private Tile swapPieces(Tile oldTile, Tile newTile) throws BoardException {
+    try {
+      if(chessRules(Objects.requireNonNull(oldTile), Objects.requireNonNull(newTile))) {
+        newTile.setPiece(oldTile.getPiece());
+        oldTile.clearPiece();
+      } else {
+        throw new BoardException(errChessRules);
+      }
+    } catch(Exception e) {
+      throw new BoardException(e.getMessage(), e);
+    }
+    return newTile;
   }
 
   //TODO wip
-  private boolean chessRules(Tile oldTile, Tile newTile) throws BoardException {
+  private boolean chessRules(Tile oldTile, Tile newTile) {
     boolean ret;
     if(ret = pieceRuleSet(oldTile, newTile)) {
       switch(Pieces.valueOfChar(oldTile.getPiece().getShorthand())) {
@@ -105,14 +114,13 @@ public class Standard extends Base {
     return ret;
   }
 
-  private boolean pieceRuleSet(Tile old, Tile newt) throws BoardException {
-    if(old.getCol() == newt.getCol()) {
-      for(int i = old.getCol(); i < newt.getCol()-1; i++) {
-        if(getTile(new Tile(old.getRow(), i)).holdsPiece()) {
-
-        }
+  private boolean pieceRuleSet(Tile old, Tile newt) {
+    for(Tile t : piecesOnPath(old, newt)) {
+      if(t.hasPiece()) {
+        return false;
       }
     }
+
     return true;
   }
 
@@ -122,5 +130,22 @@ public class Standard extends Base {
 
   private boolean kingRuleSet(Tile old, Tile newt) {
     return true;
+  }
+
+  private List<Tile> piecesOnPath(Tile old, Tile newt) {
+    List<Tile> ret = new ArrayList<>();
+
+    //TODO wip
+    //TODO big broke
+    for(Tile t : getBoard()) {
+      if(t != old && t != newt) {
+        if(old.getRow() == newt.getRow() && old.getRow() == t.getRow()) {
+          ret.add(t);
+        } else if(old.getCol() == newt.getCol() && old.getCol() == t.getCol()) {
+          ret.add(t);
+        }
+      }
+    }
+    return ret;
   }
 }

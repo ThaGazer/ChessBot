@@ -1,8 +1,9 @@
-package game;/*
+/*
  * Author: ThaGazer
  * File:asd
  * Date: 12/1/2018
  */
+package game;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -75,7 +76,7 @@ public class Chess implements Closeable {
         }
       } while(playOn);
     } catch(Exception e) {
-      System.err.println(errSever + e.getMessage());
+      e.printStackTrace();
     }
   }
 

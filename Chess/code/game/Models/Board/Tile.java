@@ -35,6 +35,10 @@ public class Tile {
     return COLUMNS.getByNum(x);
   }
 
+  public static boolean withinBounds() {
+    return true;
+  }
+
   public void setRow(int r) throws BoardException {
     if (r >= 1 && r <= 8) {
       row = r;
@@ -74,10 +78,6 @@ public class Tile {
 
   public void clearPiece() {
     pieceHolder = null;
-  }
-
-  public boolean holdsPiece() {
-    return getPiece() != null;
   }
 
   @Override
