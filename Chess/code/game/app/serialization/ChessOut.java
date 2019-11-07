@@ -7,11 +7,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class CSOut {
+public class ChessOut {
 
   private OutputStream out;
 
-  public CSOut(OutputStream outSource) {
+  public ChessOut(OutputStream outSource) {
     setOutputSource(outSource);
   }
 

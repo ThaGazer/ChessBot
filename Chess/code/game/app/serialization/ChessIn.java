@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
-public class CSIn {
+public class ChessIn {
 
   private InputStream in;
 
-  public CSIn(InputStream inputSource) {
+  public ChessIn(InputStream inputSource) {
     setInputStream(inputSource);
   }
 
