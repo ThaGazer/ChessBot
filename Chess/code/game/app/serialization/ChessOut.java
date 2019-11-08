@@ -19,12 +19,11 @@ public class ChessOut {
     out = Objects.requireNonNull(outSource);
   }
 
-
-  public void writeLine(String line) throws ChessSerializationException {
-    writeLine(line, StandardCharsets.US_ASCII);
+  public void write(String line) throws ChessSerializationException {
+    write(line, StandardCharsets.UTF_8);
   }
 
-  public void writeLine(String line, Charset encoding) throws ChessSerializationException {
+  public void write(String line, Charset encoding) throws ChessSerializationException {
     write(line.getBytes(encoding));
   }
 
